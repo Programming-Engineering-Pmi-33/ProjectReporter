@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProjectReporter.Modules.UsersService.Storage
@@ -13,5 +14,6 @@ namespace ProjectReporter.Modules.UsersService.Storage
         [Required] public DateTime DateTimeModified { get; set; }
 
         public virtual Department Department { get; set; }
+        public virtual List<Student> Students { get; set; }
     }
 }

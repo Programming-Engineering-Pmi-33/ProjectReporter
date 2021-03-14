@@ -15,5 +15,6 @@ namespace ProjectReporter.Modules.UsersService.Storage
 
         public virtual Faculty Faculty { get; set; }
         public virtual List<AcademicGroup> AcademicGroups { get; set; }
+        public virtual List<Teacher> Teachers { get; set; }
     }
 }
