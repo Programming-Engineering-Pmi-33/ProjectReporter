@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectReporter.Service.Infrastructure.Database;
@@ -11,11 +14,29 @@ namespace ProjectReporter.Service
         {
             if (args.Length != 0)
             {
-                if (args[0] == "--update-database")
+                var host = CreateHostBuilder(args).Build();
+                using var scope = host.Services.CreateScope();
+                if (args.Contains("--update-database"))
                 {
-                    UpdateDatabase(args);
-                    return;
+                    Console.WriteLine("Updating database.");
+                    var updater = scope.ServiceProvider.GetService<IDatabaseUpdater>();
+                    updater?.UpdateDatabase();
+                    Console.WriteLine("Done.");
                 }
+                if (args.Contains("--upload-faculties"))
+                {
+                    Console.WriteLine("Uploading faculties.");
+                    var index = args.IndexOf("--upload-faculties");
+                    if (args.Length <= index + 1)
+                    {
+                        throw new ArgumentException("Missing parameter for file with faculties.");
+                    }
+                    var uploader = scope.ServiceProvider.GetService<IDatabaseUploader>();
+                    uploader?.UploadFaculties(args[index + 1]);
+                    Console.WriteLine("Done.");
+                }
+
+                return;
             }
             CreateHostBuilder(args).Build().Run();
         }
@@ -26,13 +47,5 @@ namespace ProjectReporter.Service
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-        private static void UpdateDatabase(string[] args)
-        {
-            var host = CreateHostBuilder(args).Build();
-            using var scope = host.Services.CreateScope();
-            var updater = scope.ServiceProvider.GetService<IDatabaseUpdater>();
-            updater?.UpdateDatabase();
-        }
     }
 }

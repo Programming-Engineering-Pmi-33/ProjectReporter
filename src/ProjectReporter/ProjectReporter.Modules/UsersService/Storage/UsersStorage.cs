@@ -8,6 +8,9 @@ namespace ProjectReporter.Modules.UsersService.Storage
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Faculty> Faculties { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<AcademicGroup> AcademicGroups { get; set; }
 
         public UsersStorage(DbContextOptions<UsersStorage> options)
             : base(options)

@@ -22,6 +22,7 @@ namespace ProjectReporter.Service
         {
             services.AddControllersWithViews();
             services.AddTransient(typeof(IDatabaseUpdater), typeof(DatabaseUpdater));
+            services.AddTransient(typeof(IDatabaseUploader), typeof(DatabaseUploader));
             new DependenciesRegistrar(services, Configuration).Register();
         }
 
