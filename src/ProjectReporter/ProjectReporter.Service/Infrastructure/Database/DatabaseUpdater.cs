@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using MusicalQuiz.Main.Infrastructure.Database;
 using ProjectReporter.Modules.GroupsService.Storage;
 using ProjectReporter.Modules.UsersService.Storage;
 
