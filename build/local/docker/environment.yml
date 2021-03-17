@@ -11,6 +11,7 @@ services:
     volumes:
     - ./init.sql:/data/application/init.sql
     environment:
+      TZ : "Europe/Kiev"
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: project_reporter
