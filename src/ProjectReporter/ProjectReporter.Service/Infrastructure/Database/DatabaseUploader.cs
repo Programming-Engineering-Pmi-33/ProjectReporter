@@ -31,7 +31,7 @@ namespace ProjectReporter.Service.Infrastructure.Database
                     throw;
                 }
 
-                throw new DataException("There are duplicated faculties information.");
+                throw new DataException("File is not found or broken.");
             }
         }
 
@@ -39,15 +39,28 @@ namespace ProjectReporter.Service.Infrastructure.Database
         {
             try
             {
-                var facultyName = line.Split(':')[0];
+                var facultyName = line.Split(':')[0].Trim();
                 var departmentNames = line.Split(':')[1].Split(',');
-                var departments = departmentNames.Select(dn => new Department { Name = dn }).ToList();
-                return new Faculty { Name = facultyName, Departments = departments };
+                var departments = departmentNames.Select(dn => new Department
+                {
+                    Name = FirstCharToUpper(dn.Trim())
+                })
+                    .ToList();
+
+                return new Faculty { Name = FirstCharToUpper(facultyName), Departments = departments };
             }
             catch
             {
                 throw new ArgumentException("Faculty cannot be parsed.");
             }
         }
+
+        private static string FirstCharToUpper(string text) =>
+            text switch
+            {
+                null => throw new ArgumentNullException(nameof(text)),
+                "" => throw new ArgumentException($"{nameof(text)} cannot be empty", nameof(text)),
+                _ => text.First().ToString().ToUpper() + text.Substring(1)
+            };
     }
 }
