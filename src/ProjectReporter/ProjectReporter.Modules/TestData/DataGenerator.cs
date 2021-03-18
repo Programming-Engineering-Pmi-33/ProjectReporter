@@ -57,7 +57,7 @@ namespace ProjectReporter.Modules.TestData
             var department = new Department
             {
                 Name = GetRandStr(minFacultLen, maxFacultLen, false),
-                Faculty = faculty// id add
+                Faculty = faculty
             };
 
             var group = new AcademicGroup
