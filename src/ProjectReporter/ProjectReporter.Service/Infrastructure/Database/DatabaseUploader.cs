@@ -40,13 +40,12 @@ namespace ProjectReporter.Service.Infrastructure.Database
             try
             {
                 var facultyName = line.Split(':')[0].Trim();
-                var departmentNames = line.Split(':')[1].Split(',');
+                var departmentNames = line.Split(':')[1].Split(';');
                 var departments = departmentNames.Select(dn => new Department
                 {
                     Name = FirstCharToUpper(dn.Trim())
                 })
                     .ToList();
-
                 return new Faculty { Name = FirstCharToUpper(facultyName), Departments = departments };
             }
             catch
