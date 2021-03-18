@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ProjectReporter.Modules.TestData;
 using ProjectReporter.Service.Models;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,13 @@ namespace ProjectReporter.Service.Controllers
 
         public IActionResult Index()
         {
+            var Generator = new DataGenerator(
+                new Modules.GroupsService.Storage.GroupsStorage(
+                    new Microsoft.EntityFrameworkCore.DbContextOptions<Modules.GroupsService.Storage.GroupsStorage>()),
+                new Modules.UsersService.Storage.UsersStorage(
+                    new Microsoft.EntityFrameworkCore.DbContextOptions<Modules.UsersService.Storage.UsersStorage>())
+                );
+            Generator.AddUsers(10, 3, 1);
             return View();
         }
 

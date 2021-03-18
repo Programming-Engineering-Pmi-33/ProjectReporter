@@ -14,10 +14,10 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         [Required] public int Points { get; set; }
         [Required] public int GroupId { get; set; }
 
-        [Required] public DateTime DateTimeCreated { get; set; }
-        [Required] public DateTime DateTimeModified { get; set; }
+        [Required] public DateTime DateTimeCreated { get; set; }//
+        [Required] public DateTime DateTimeModified { get; set; }//
 
-        public virtual Group Group { get; set; }
+        public virtual Group Group { get; set; }//
         public List<Report> Reports { get; set; }
     }
 }

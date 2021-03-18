@@ -6,7 +6,7 @@ namespace ProjectReporter.Modules.GroupsService.Storage
 {
     public class Group
     {
-        [Key] public int Id { get; set; }
+        [Key] public int Id { get; set; }//
         [Required] public string Name { get; set; }
         public string Description { get; set; }
         [Required] public int Status { get; set; }
@@ -14,8 +14,8 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         public int? CoOwnerId { get; set; }
         public string GitLink { get; set; }
 
-        [Required] public DateTime DateTimeCreated { get; set; }
-        [Required] public DateTime DateTimeModified { get; set; }
+        [Required] public DateTime DateTimeCreated { get; set; }//
+        [Required] public DateTime DateTimeModified { get; set; }//
 
         public List<Project> Projects { get; set; }
         public List<Task> Tasks { get; set; }
