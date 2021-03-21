@@ -1,0 +1,18 @@
+
+#docker-compose -f environment.yml up -d project_reporter
+
+version: '2.1'
+services:
+  project_reporter:
+    image: mysql:latest
+    ports:
+    - "3316:3306"
+    command: --init-file /data/application/init.sql
+    volumes:
+    - ./init.sql:/data/application/init.sql
+    environment:
+      TZ : "Europe/Kiev"
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: project_reporter
+      MYSQL_USER: developer
