@@ -7,7 +7,7 @@
 
 **Open database**
 
-- `docker exec -it docker_project_reporter_1 mysql -udeveloper -p` - To open container (Password is required).
+- `docker exec -it docker_project_reporter_1 mysql -u developer -p` - To open container (Password is required).
 - `USE project_reporter;` - To open database.
 
 **Users Service**
@@ -24,3 +24,4 @@
 
 - `dotnet run --project ./ProjectReporter.Service/ProjectReporter.Service.csproj --update-database` - To start Service for DatabaseUpdater only.
 - `dotnet run --project ./ProjectReporter.Service/ProjectReporter.Service.csproj --upload-faculties ../../../build/local/initial_data/faculties.txt` - To start Service for DatabaseUploader only.
+- `dotnet run --project ./ProjectReporter.Service/ProjectReporter.Service.csproj --generate-test-data` - To start Service for generating random test data.

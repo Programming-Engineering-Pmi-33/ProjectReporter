@@ -1,49 +1,49 @@
-﻿using ProjectReporter.Modules.GroupsService.Storage;
-using ProjectReporter.Modules.UsersService.Storage;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
+using ProjectReporter.Modules.GroupsService.Storage;
+using ProjectReporter.Modules.UsersService.Storage;
 
-namespace ProjectReporter.Service.Infrastructure
+namespace ProjectReporter.Service.Infrastructure.Database
 {
     using CryptRand = System.Security.Cryptography.RandomNumberGenerator;
 
-    public class DataGenerator: IDataGenerator
+    public class DataGenerator : IDataGenerator
     {
-        private GroupsStorage _groupsStorage;
-        private UsersStorage _usersStorage;
+        private readonly GroupsStorage _groupsStorage;
+        private readonly UsersStorage _usersStorage;
+        private readonly Random _rand;
 
-        private static int minStatus = 0;
-        private static int maxStatus = 5;
-        private static int maxPoint = 100;
-        private static int maxCountOfUsersInGroup = 8;
-        private static int minNamesLen = 3;
-        private static int maxNamesLen = 12;
-        private static int minFacultLen = 4;
-        private static int maxFacultLen = 50;
-        private static int saltLen = 6;
-        private static int heshLen = 32;
+        private const int MinStatus = 0;
+        private const int MaxStatus = 5;
+        private const int MaxPoint = 100;
+        private const int MaxCountOfUsersInGroup = 8;
+        private const int MinNamesLen = 3;
+        private const int MaxNamesLen = 12;
+        private const int MinFacultyLen = 4;
+        private const int MaxFacultyLen = 50;
+        private const int HashLen = 32;
 
-        private Random rand;
         public DataGenerator(GroupsStorage groupsStorage, UsersStorage usersStorage)
         {
             _groupsStorage = groupsStorage;
             _usersStorage = usersStorage;
 
-            rand = new Random();
+            _rand = new Random();
         }
-        private string GetRandStr(int minLen, int maxLen, bool useDigit = false)
+        private static string GetRandStr(int minLen, int maxLen, bool useDigit = false)
         {
-            string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
             if (useDigit)
             {
                 valid += "1234567890";
             }
 
-            StringBuilder res = new StringBuilder();
-            int length = CryptRand.GetInt32(minLen, maxLen + 1);
-            for (int i = 0; i < length; i++)
+            var res = new StringBuilder();
+            var length = CryptRand.GetInt32(minLen, maxLen + 1);
+            for (var i = 0; i < length; i++)
             {
                 res.Append(valid[CryptRand.GetInt32(valid.Length)]);
             }
@@ -52,57 +52,57 @@ namespace ProjectReporter.Service.Infrastructure
         }
         public void AddUsers(int countUsers, int countTeachers, int countAdmins)
         {
-            var faculty = new Faculty { Name = GetRandStr(minFacultLen, maxFacultLen, false) };
+            var faculty = new Faculty { Name = GetRandStr(MinFacultyLen, MaxFacultyLen) };
 
             var department = new Department
             {
-                Name = GetRandStr(minFacultLen, maxFacultLen, false),
+                Name = GetRandStr(MinFacultyLen, MaxFacultyLen),
                 Faculty = faculty
             };
 
             var group = new AcademicGroup
             {
-                Name = GetRandStr(minNamesLen, maxNamesLen, true),
+                Name = GetRandStr(MinNamesLen, MaxNamesLen, true),
                 Department = department
             };
-            for (int i = 0; i < countUsers; i++)
+            for (var i = 0; i < countUsers; i++)
             {
                 var student = new Student
                 {
-                    FirstName = GetRandStr(minNamesLen, maxNamesLen, false),
-                    LastName = GetRandStr(minNamesLen, maxNamesLen, false),
-                    Email = GetRandStr(minNamesLen, maxNamesLen, true),
-                    PasswordHash = GetRandStr(heshLen, heshLen, true),
-                    GitLink = GetRandStr(minNamesLen, maxNamesLen, true),
+                    FirstName = GetRandStr(MinNamesLen, MaxNamesLen),
+                    LastName = GetRandStr(MinNamesLen, MaxNamesLen),
+                    Email = GetRandStr(MinNamesLen, MaxNamesLen, true),
+                    PasswordHash = GetRandStr(HashLen, HashLen, true),
+                    GitLink = GetRandStr(MinNamesLen, MaxNamesLen, true),
                     Group = group
                 };
 
                 _usersStorage.Students.Add(student);
             }
 
-            for (int i = 0; i < countTeachers; i++)
+            for (var i = 0; i < countTeachers; i++)
             {
                 var teacher = new Teacher
                 {
-                    FirstName = GetRandStr(minNamesLen, maxNamesLen, false),
-                    LastName = GetRandStr(minNamesLen, maxNamesLen, false),
-                    Email = GetRandStr(minNamesLen, maxNamesLen, true),
-                    PasswordHash = GetRandStr(heshLen, heshLen, true),
+                    FirstName = GetRandStr(MinNamesLen, MaxNamesLen),
+                    LastName = GetRandStr(MinNamesLen, MaxNamesLen),
+                    Email = GetRandStr(MinNamesLen, MaxNamesLen, true),
+                    PasswordHash = GetRandStr(HashLen, HashLen, true),
                     Department = department
                 };
 
                 _usersStorage.Teachers.Add(teacher);
             }
 
-            for (int i = 0; i < countAdmins; i++)
+            for (var i = 0; i < countAdmins; i++)
             {
                 var admin = new Admin
                 {
-                    FirstName = GetRandStr(minNamesLen, maxNamesLen, false),
-                    LastName = GetRandStr(minNamesLen, maxNamesLen, false),
-                    Email = GetRandStr(minNamesLen, maxNamesLen, true),
-                    PasswordHash = GetRandStr(heshLen, heshLen, true),
-                    SecretKey = GetRandStr(minNamesLen, maxNamesLen, true)
+                    FirstName = GetRandStr(MinNamesLen, MaxNamesLen),
+                    LastName = GetRandStr(MinNamesLen, MaxNamesLen),
+                    Email = GetRandStr(MinNamesLen, MaxNamesLen, true),
+                    PasswordHash = GetRandStr(HashLen, HashLen, true),
+                    SecretKey = GetRandStr(MinNamesLen, MaxNamesLen, true)
                 };
 
                 _usersStorage.Admins.Add(admin);
@@ -110,79 +110,82 @@ namespace ProjectReporter.Service.Infrastructure
 
             _usersStorage.SaveChanges();
         }
-        public void AddGroups(int groups, int progects, int tasks)
+        public void AddGroups(int groups, int projects, int tasks)
         {
-            List<User> users = _usersStorage.Users.ToList();
+            var users = _usersStorage.Users.ToList();
             if (users.Count < 5)
                 return;
-            for (int i = 0; i < groups; i++)
+            for (var i = 0; i < groups; i++)
             {
                 var group = new Group
                 {
-                    Name = GetRandStr(minNamesLen, maxNamesLen, false),
-                    Description = GetRandStr(minFacultLen, maxFacultLen, false),
-                    Status = rand.Next(minStatus, maxStatus),
-                    OwnerId = users[rand.Next(users.Count)].Id,
-                    GitLink = GetRandStr(minNamesLen, maxNamesLen, true),
+                    Name = GetRandStr(MinNamesLen, MaxNamesLen),
+                    Description = GetRandStr(MinFacultyLen, MaxFacultyLen),
+                    Status = _rand.Next(MinStatus, MaxStatus),
+                    OwnerId = users[_rand.Next(users.Count)].Id,
+                    GitLink = GetRandStr(MinNamesLen, MaxNamesLen, true),
                     Projects = new List<Project>(),
                     Members = new List<GroupMember>(),
                     Tasks = new List<Task>()
                 };
-                for (int j = 0; j < rand.Next(maxCountOfUsersInGroup); j++)
+                for (var j = 0; j < _rand.Next(MaxCountOfUsersInGroup); j++)
                 {
                     group.Members.Add(
                         new GroupMember
                         {
-                            UserId = users[rand.Next(users.Count)].Id,
-                            InviterId = users[rand.Next(users.Count)].Id,
+                            UserId = users[_rand.Next(users.Count)].Id,
+                            InviterId = users[_rand.Next(users.Count)].Id,
                             Group = group,
-                            Guid = GetRandStr(minNamesLen, maxNamesLen, false)
+                            Guid = GetRandStr(MinNamesLen, MaxNamesLen)
                         }
                         );
                 }
                 _groupsStorage.Groups.Add(group);
+                _groupsStorage.SaveChanges();
             }
 
-            for (int i = 0; i < progects; i++)
+            for (var i = 0; i < projects; i++)
             {
-                var currGroup = _groupsStorage.Groups.ElementAt(rand.Next(1, _groupsStorage.Groups.Count()));
+                var groupId = _rand.Next(1, _groupsStorage.Groups.Count());
+                var curGroup = _groupsStorage.Groups.Include(t => t.Projects).First(g => g.Id == groupId);
                 var project = new Project
                 {
-                    Name = GetRandStr(minNamesLen, maxNamesLen, false),
-                    Description = GetRandStr(minFacultLen, maxFacultLen, false),
-                    GitLink = GetRandStr(minNamesLen, maxNamesLen, true),
-                    Group = currGroup,
+                    Name = GetRandStr(MinNamesLen, MaxNamesLen),
+                    Description = GetRandStr(MinFacultyLen, MaxFacultyLen),
+                    GitLink = GetRandStr(MinNamesLen, MaxNamesLen, true),
+                    Group = curGroup,
                     Members = new List<ProjectMember>(),
                     Reports = new List<Report>()
                 };
-                for (int j = 0; j < rand.Next(maxCountOfUsersInGroup); j++)
+                for (var j = 0; j < _rand.Next(MaxCountOfUsersInGroup); j++)
                 {
                     project.Members.Add(
                         new ProjectMember
                         {
-                            UserId = users[rand.Next(users.Count)].Id,
+                            UserId = users[_rand.Next(users.Count)].Id,
                             Project = project
                         }
                         );
                 }
-                currGroup.Projects.Add(project);
+                curGroup.Projects.Add(project);
+                _groupsStorage.SaveChanges();
             }
 
-            for (int i = 0; i < tasks; i++)
+            for (var i = 0; i < tasks; i++)
             {
-                var currGroup = _groupsStorage.Groups.ElementAt(rand.Next(1, _groupsStorage.Groups.Count()));
+                var groupId = _rand.Next(1, _groupsStorage.Groups.Count());
+                var curGroup = _groupsStorage.Groups.Include(t => t.Tasks).First(g => g.Id == groupId);
                 var task = new Task
                 {
-                    Name = GetRandStr(minNamesLen, maxNamesLen, false),
-                    Description = GetRandStr(minFacultLen, maxFacultLen, false),
-                    Points = rand.Next(maxPoint),
-                    Group = currGroup,
+                    Name = GetRandStr(MinNamesLen, MaxNamesLen),
+                    Description = GetRandStr(MinFacultyLen, MaxFacultyLen),
+                    Points = _rand.Next(MaxPoint),
+                    Group = curGroup,
                     Reports = new List<Report>()
                 };
-                currGroup.Tasks.Add(task);
+                curGroup.Tasks.Add(task);
+                _groupsStorage.SaveChanges();
             }
-
-            _usersStorage.SaveChanges();
         }
     }
 }

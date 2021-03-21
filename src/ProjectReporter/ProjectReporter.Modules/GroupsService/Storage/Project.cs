@@ -16,7 +16,7 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         [Required] public DateTime DateTimeModified { get; set; }
 
         public virtual Group Group { get; set; }
-        public List<ProjectMember> Members { get; set; }
-        public List<Report> Reports { get; set; }
+        public virtual List<ProjectMember> Members { get; set; }
+        public virtual List<Report> Reports { get; set; }
     }
 }
