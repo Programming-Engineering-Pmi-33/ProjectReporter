@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectReporter.Service.Dependencies;
 using ProjectReporter.Service.Infrastructure.Database;
+using ProjectReporter.Service.Infrastructure;
 
 namespace ProjectReporter.Service
 {
@@ -23,6 +24,7 @@ namespace ProjectReporter.Service
             services.AddControllersWithViews();
             services.AddTransient(typeof(IDatabaseUpdater), typeof(DatabaseUpdater));
             services.AddTransient(typeof(IDatabaseUploader), typeof(DatabaseUploader));
+            services.AddTransient(typeof(IDataGenerator), typeof(DataGenerator));
             new DependenciesRegistrar(services, Configuration).Register();
         }
 

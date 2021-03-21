@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProjectReporter.Service.Infrastructure;
 using ProjectReporter.Service.Infrastructure.Database;
 
 namespace ProjectReporter.Service
@@ -33,6 +34,13 @@ namespace ProjectReporter.Service
                     }
                     var uploader = scope.ServiceProvider.GetService<IDatabaseUploader>();
                     uploader?.UploadFaculties(args[index + 1]);
+                    Console.WriteLine("Done.");
+                }
+                if (args.Contains("--generate-test-data")) 
+                {
+                    Console.WriteLine("Generating data.");
+                    var generator = scope.ServiceProvider.GetService<IDataGenerator>();
+                    generator?.AddUsers(5, 5, 5);
                     Console.WriteLine("Done.");
                 }
 

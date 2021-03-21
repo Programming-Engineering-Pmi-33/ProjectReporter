@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
-using CryptRand = System.Security.Cryptography.RandomNumberGenerator;
-
-namespace ProjectReporter.Modules.TestData
+namespace ProjectReporter.Service.Infrastructure
 {
-    public class DataGenerator
+    using CryptRand = System.Security.Cryptography.RandomNumberGenerator;
+
+    public class DataGenerator: IDataGenerator
     {
         private GroupsStorage _groupsStorage;
         private UsersStorage _usersStorage;
@@ -110,7 +110,7 @@ namespace ProjectReporter.Modules.TestData
 
             _usersStorage.SaveChanges();
         }
-        public void AddGroups(int groups, int progects, int tasks)//
+        public void AddGroups(int groups, int progects, int tasks)
         {
             List<User> users = _usersStorage.Users.ToList();
             if (users.Count < 5)
@@ -138,11 +138,11 @@ namespace ProjectReporter.Modules.TestData
                             Group = group,
                             Guid = GetRandStr(minNamesLen, maxNamesLen, false)
                         }
-                        ); 
+                        );
                 }
                 _groupsStorage.Groups.Add(group);
             }
-          
+
             for (int i = 0; i < progects; i++)
             {
                 var currGroup = _groupsStorage.Groups.ElementAt(rand.Next(1, _groupsStorage.Groups.Count()));
@@ -159,7 +159,7 @@ namespace ProjectReporter.Modules.TestData
                 {
                     project.Members.Add(
                         new ProjectMember
-                        { 
+                        {
                             UserId = users[rand.Next(users.Count)].Id,
                             Project = project
                         }
@@ -186,4 +186,3 @@ namespace ProjectReporter.Modules.TestData
         }
     }
 }
-
