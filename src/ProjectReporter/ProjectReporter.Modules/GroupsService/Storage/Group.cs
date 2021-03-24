@@ -10,8 +10,8 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         [Required] public string Name { get; set; }
         public string Description { get; set; }
         [Required] public int Status { get; set; }
-        [Required] public int OwnerId { get; set; }
-        public int? CoOwnerId { get; set; }
+        [Required] public string OwnerId { get; set; }
+        public string CoOwnerId { get; set; }
         public string GitLink { get; set; }
 
         [Required] public DateTime DateTimeCreated { get; set; }

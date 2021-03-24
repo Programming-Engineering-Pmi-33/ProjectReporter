@@ -2,16 +2,22 @@
 using Microsoft.Extensions.Logging;
 using ProjectReporter.Service.Models;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using ProjectReporter.Modules.UsersService.Storage;
 
 namespace ProjectReporter.Service.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _logger = logger;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()

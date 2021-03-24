@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectReporter.Modules.GroupsService.Storage;
 
 namespace ProjectReporter.Modules.GroupsService.Storage.Migrations
 {
     [DbContext(typeof(GroupsStorage))]
-    partial class GroupsStorageModelSnapshot : ModelSnapshot
+    [Migration("20210324220241_ChangeIdToString")]
+    partial class ChangeIdToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
