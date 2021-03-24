@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectReporter.Modules.UsersService.Storage;
 
 namespace ProjectReporter.Modules.UsersService
 {
@@ -22,6 +23,9 @@ namespace ProjectReporter.Modules.UsersService
                         mySqlOptions.MigrationsAssembly("ProjectReporter.Modules");
                         mySqlOptions.EnableRetryOnFailure(15, TimeSpan.FromMilliseconds(2000), null!);
                     }), ServiceLifetime.Transient);
+
+            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<UsersStorage>();
         }
     }
 }

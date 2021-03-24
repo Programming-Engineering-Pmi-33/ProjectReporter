@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProjectReporter.Service.Dependencies;
 using ProjectReporter.Service.Infrastructure.Database;
-using ProjectReporter.Service.Infrastructure;
 
 namespace ProjectReporter.Service
 {
@@ -34,6 +33,7 @@ namespace ProjectReporter.Service
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {
@@ -46,6 +46,7 @@ namespace ProjectReporter.Service
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -53,6 +54,7 @@ namespace ProjectReporter.Service
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }

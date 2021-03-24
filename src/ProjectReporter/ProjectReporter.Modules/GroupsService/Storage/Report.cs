@@ -8,7 +8,7 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         [Key] public int Id { get; set; }
         [Required] public int ProjectId { get; set; }
         [Required] public int TaskId { get; set; }
-        [Required] public int UserId { get; set; }
+        [Required] public string UserId { get; set; }
         public string Done { get; set; }
         public string Planned { get; set; }
         public string Issues { get; set; }

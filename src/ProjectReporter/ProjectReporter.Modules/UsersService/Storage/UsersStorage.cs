@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectReporter.Modules.UsersService.Storage
 {
-    public class UsersStorage : DbContext
+    public class UsersStorage : IdentityDbContext<User>
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Admin> Admins { get; set; }
@@ -18,7 +18,7 @@ namespace ProjectReporter.Modules.UsersService.Storage
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().Property(u => u.DateTimeCreated).ValueGeneratedOnAdd();
             modelBuilder.Entity<User>().Property(u => u.DateTimeModified).ValueGeneratedOnAddOrUpdate();
 

@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using ProjectReporter.Service.Infrastructure.Database;
 
 namespace ProjectReporter.Service
@@ -50,7 +50,7 @@ namespace ProjectReporter.Service
             CreateHostBuilder(args).Build().Run();
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args) =>
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

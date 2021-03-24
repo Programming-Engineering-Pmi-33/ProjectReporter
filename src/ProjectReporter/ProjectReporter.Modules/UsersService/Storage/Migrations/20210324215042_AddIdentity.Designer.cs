@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectReporter.Modules.UsersService.Storage;
 
 namespace ProjectReporter.Modules.UsersService.Storage.Migrations
 {
     [DbContext(typeof(UsersStorage))]
-    partial class UsersStorageModelSnapshot : ModelSnapshot
+    [Migration("20210324215042_AddIdentity")]
+    partial class AddIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

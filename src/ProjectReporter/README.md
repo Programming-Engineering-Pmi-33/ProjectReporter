@@ -12,12 +12,12 @@
 
 **Users Service**
 
-- `Add-Migration "Name" -Project ProjectReporter.Main.Modules -Context UsersStorage -O UsersService/Storage/Migrations` - To add migration for UsersStorage.
+- `Add-Migration "Name" -Project ProjectReporter.Modules -Context UsersStorage -O UsersService/Storage/Migrations` - To add migration for UsersStorage.
 - `Update-Database -Project ProjectReporter.Modules -Context UsersStorage` - To apply migrations for UsersStorage.
 
 **Groups Service**
 
-- `Add-Migration "Name" -Project ProjectReporter.Main.Modules -Context GroupsStorage -O GroupsService/Storage/Migrations` - To add migration for GroupsStorage.
+- `Add-Migration "Name" -Project ProjectReporter.Modules -Context GroupsStorage -O GroupsService/Storage/Migrations` - To add migration for GroupsStorage.
 - `Update-Database -Project ProjectReporter.Modules -Context GroupsStorage` - To apply migrations for GroupsStorage.
 
 **Service Arguments**
