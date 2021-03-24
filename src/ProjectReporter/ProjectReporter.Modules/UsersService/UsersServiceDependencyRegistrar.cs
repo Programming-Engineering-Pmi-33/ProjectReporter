@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ProjectReporter.Modules.UsersService.Api;
+using ProjectReporter.Modules.UsersService.Api.Factories;
+using ProjectReporter.Modules.UsersService.Repository;
+using ProjectReporter.Modules.UsersService.Repository.Factories;
 using ProjectReporter.Modules.UsersService.Storage;
 
 namespace ProjectReporter.Modules.UsersService
@@ -11,7 +15,10 @@ namespace ProjectReporter.Modules.UsersService
         public static void AddServices(IServiceCollection services, IConfiguration configuration)
         {
             AddDbContext(services, configuration);
-            // Here is a place for Dependency Injections.
+            services.AddTransient(typeof(IUsersApi), typeof(UsersApi));
+            services.AddTransient(typeof(IStorageUserModelMapper), typeof(StorageUserModelMapper));
+            services.AddTransient(typeof(IStorageUserReconstructionFactory), typeof(StorageUserReconstructionFactory));
+            services.AddTransient(typeof(IUsersRepository), typeof(UsersRepository));
         }
 
         private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
