@@ -1,6 +1,6 @@
 ﻿namespace ProjectReporter.Modules.UsersService.Repository.Models
 {
-    public class User
+    public record User
     {
         public string Id { get; }
         public string FirstName { get; }

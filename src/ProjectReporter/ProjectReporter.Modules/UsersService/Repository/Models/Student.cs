@@ -1,6 +1,6 @@
 ﻿namespace ProjectReporter.Modules.UsersService.Repository.Models
 {
-    public class Student : User
+    public record Student : User
     {
         public int GroupId { get; }
         public string GitLink { get; }

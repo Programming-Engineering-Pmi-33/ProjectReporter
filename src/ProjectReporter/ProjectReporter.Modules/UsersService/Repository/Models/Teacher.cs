@@ -1,6 +1,6 @@
 ﻿namespace ProjectReporter.Modules.UsersService.Repository.Models
 {
-    public class Teacher : User
+    public record Teacher : User
     {
         public int DepartmentId { get; }
 
