@@ -7,12 +7,14 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
     {
         private readonly IStorageProjectReconstructionFactory _projectReconstructionFactory;
         private readonly IStorageTaskReconstructionFactory _taskReconstructionFactory;
-
+        private readonly IStorageGroupMemberReconstructionFactory _groupMemberReconstructionFactory;
         public StorageGroupReconstructionFactory(IStorageProjectReconstructionFactory projectReconstructionFactory,
-            IStorageTaskReconstructionFactory taskReconstructionFactory)
+            IStorageTaskReconstructionFactory taskReconstructionFactory,
+            IStorageGroupMemberReconstructionFactory groupMemberReconstructionFactory)
         {
             _projectReconstructionFactory = projectReconstructionFactory;
             _taskReconstructionFactory = taskReconstructionFactory;
+            _groupMemberReconstructionFactory = groupMemberReconstructionFactory;
         }
 
         public Group Create(Storage.Group group) =>
@@ -26,7 +28,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
                     .ToArray(),
                 group.Tasks.Select(t => _taskReconstructionFactory.Create(t))
                     .ToArray(),
-                group.Members.Select(m => m.UserId)
+                group.Members.Select(m => _groupMemberReconstructionFactory.Map(m))
                     .ToArray(),
                 group.Id);
     }

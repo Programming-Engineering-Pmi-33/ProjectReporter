@@ -24,6 +24,8 @@ namespace ProjectReporter.Modules.GroupsService
             services.AddTransient(typeof(IRepositoryProjectModelMapper), typeof(RepositoryProjectModelMapper));
             services.AddTransient(typeof(IRepositoryReportModelMapper), typeof(RepositoryReportModelMapper));
             services.AddTransient(typeof(IRepositoryTaskModelMapper), typeof(RepositoryTaskModelMapper));
+            services.AddTransient(typeof(IStorageGroupMemberReconstructionFactory),
+                typeof(StorageGroupMemberReconstructionFactory));
         }
 
         private static void AddDbContext(IServiceCollection services, IConfiguration configuration)

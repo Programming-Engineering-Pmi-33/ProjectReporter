@@ -32,44 +32,59 @@ namespace ProjectReporter.Modules.GroupsService.Api
             await _repository.AddGroup(group);
         }
 
-        public Task AddCoOwner(int groupId, string ownerId, string coOwnerId)
+        public async Task AddCoOwner(int groupId, string ownerId, string coOwnerId)
         {
-            throw new System.NotImplementedException();
+            var group = await _repository.GetGroup(groupId);
+            //Validation
+            var updatedGroup = group.AddCoOwner(coOwnerId);
+            await _repository.UpdateGroup(updatedGroup);
         }
 
-        public Task Invite(int groupId, int academicGroupId)
+        public async Task Invite(int groupId, string ownerId, params string[] usersIds)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var group = await _repository.GetGroup(groupId);
+            var updatedGroup = group.AddMembers(ownerId, usersIds);
+            await _repository.UpdateGroup(updatedGroup);
         }
 
-        public Task Invite(int groupId, params int[] usersIds)
+        public async Task AcceptInvitation(int groupId, string invitation, string userId)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var group = await _repository.GetGroup(groupId);
+            var updatedGroup = group.Join(userId, invitation);
+            await _repository.UpdateGroup(updatedGroup);
         }
 
-        public Task AcceptInvitation(int groupId, string invitation, string userId)
+        public async Task CreateProject(int groupId, ProjectContract contract)
         {
-            throw new System.NotImplementedException();
+            var group = await _repository.GetGroup(groupId);
+            var updatedGroup = group.CreateProject(contract.Name, contract.Description, contract.GitLink);
+            await _repository.UpdateGroup(updatedGroup);
         }
 
-        public Task CreateProject(int groupId, ProjectContract contract)
+        public async Task AddUsersToProject(int groupId, int projectId, string ownerId, params string[] usersIds)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var group = await _repository.GetGroup(groupId);
+            var updatedGroup = group.AddUsersToProject(projectId, usersIds);
+            await _repository.UpdateGroup(updatedGroup);
         }
 
-        public Task AddUsersToProject(int projectId, string ownerId, params string[] usersIds)
+        public async Task EditProject(int groupId, ProjectContract contract, string userId)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var group = await _repository.GetGroup(groupId);
+            var updatedGroup = group.UpdateProject(contract.Id, contract.Name, contract.Description,contract.GitLink);
+            await _repository.UpdateGroup(updatedGroup);
         }
 
-        public Task EditProject(ProjectContract contract, string userId)
+        public async Task CreateTask(int groupId, TaskContract contract, string userId)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public Task CreateTask(int groupId, TaskContract contract, string userId)
-        {
-            throw new System.NotImplementedException();
+            //Validation
+            var group = await _repository.GetGroup(groupId);
+            var updatedGroup = group.CreateTask(contract.Name, contract.Description, contract.Points);
+            await _repository.UpdateGroup(updatedGroup);
         }
 
         public Task EditTask(TaskContract contract, string ownerId)

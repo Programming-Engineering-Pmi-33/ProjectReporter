@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace ProjectReporter.Modules.GroupsService.Repository.Models
 {
@@ -14,7 +16,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
         public string GitLink { get; }
         public IReadOnlyCollection<Project> Projects { get; }
         public IReadOnlyCollection<Task> Tasks { get; }
-        public IReadOnlyCollection<string> MembersIds { get; }
+        public IReadOnlyCollection<GroupMember> Members { get; }
 
         public Group(string name,
             string description,
@@ -22,9 +24,9 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             string ownerId,
             string coOwnerId,
             string gitLink,
-            IList<Project> projects,
-            IList<Task> tasks,
-            IList<string> membersIds,
+            IEnumerable<Project> projects,
+            IEnumerable<Task> tasks,
+            IEnumerable<GroupMember> members,
             int id)
         {
             Id = id;
@@ -34,9 +36,64 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             OwnerId = ownerId;
             CoOwnerId = coOwnerId;
             GitLink = gitLink;
-            Projects = new ReadOnlyCollection<Project>(projects);
-            Tasks = new ReadOnlyCollection<Task>(tasks);
-            MembersIds = new ReadOnlyCollection<string>(membersIds);
+            Projects = new ReadOnlyCollection<Project>(projects.ToList());
+            Tasks = new ReadOnlyCollection<Task>(tasks.ToList());
+            Members = new ReadOnlyCollection<GroupMember>(members.ToList());
         }
+
+        public Group AddCoOwner(string coOwnerId)
+        {
+            //Validation
+            return new(Name, Description, Status, OwnerId, coOwnerId, GitLink, Projects, Tasks, Members, Id);
+        }
+
+        public Group AddMembers(string inviterId, params string[] ids)
+        {
+            var guid = Guid.NewGuid();
+            var members = ids.Select(m => new GroupMember(m, inviterId, guid.ToString(), false));
+            return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, Projects, Tasks, members, Id);
+        }
+
+        public Group Join(string userId, string invitation)
+        {
+            var members = Members.ToArray();
+            members.First(m => m.UserId == userId && m.Guid == invitation).ActivateMember();
+            return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, Projects, Tasks, members, Id);
+        }
+
+        public Group CreateProject(string name, string description, string gitLink)
+        {
+            var newProject = new Project(name, description, gitLink, new string[0]);
+            var updatedProjects = Projects.ToList();
+            updatedProjects.Add(newProject);
+            return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, updatedProjects, Tasks, Members, Id);
+        }
+
+        public Group AddUsersToProject(int projectId, params string[] usersIds)
+        {
+            var projects = Projects.ToList();
+            projects.First(p => p.Id == projectId).AddUsers(usersIds);
+            return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, projects, Tasks, Members, Id);
+        }
+
+        public Group UpdateProject(int projectId, string name, string description, string gitLink)
+        {
+            var project = Projects.First(p => p.Id == projectId);
+            project = project.Update(name, description, gitLink);
+            var updatedProjects = Projects.ToList();
+            updatedProjects.Remove(updatedProjects.Find(p=>p.Id == projectId));
+            updatedProjects.Add(project);
+            return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, updatedProjects, Tasks, Members, Id);
+        }
+
+        public Group CreateTask(string name, string description, int points)
+        {
+            var newTask = new Task(name, description, points, new Report[0]);
+            var updatedTasks = Tasks.ToList();
+            updatedTasks.Add(newTask);
+            return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, Projects, updatedTasks, Members, Id);
+        }
+
+
     }
 }
