@@ -5,9 +5,10 @@ namespace ProjectReporter.Modules.GroupsService.Api.Factories
 {
     public class RepositoryProjectModelMapper: IRepositoryProjectModelMapper
     {
-        public Project Map(ProjectContract contract)
-        {
-            throw new System.NotImplementedException();
-        }
+        public Project Map(ProjectContract contract) =>
+            new(contract.Name,
+                contract.Description,
+                contract.GitLink,
+                id: contract.Id);
     }
 }

@@ -11,8 +11,13 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
         {
             _reportReconstructionFactory = reportReconstructionFactory;
         }
+
         public Task Create(Storage.Task task) =>
-            new(task.Name, task.Description, task.Points,
-                task.Reports.Select(r => _reportReconstructionFactory.Create(r)).ToArray(), task.Id);
+            new(task.Name,
+                task.Description,
+                task.Points,
+                task.Reports.Select(r => _reportReconstructionFactory.Create(r))
+                    .ToArray(),
+                task.Id);
     }
 }
