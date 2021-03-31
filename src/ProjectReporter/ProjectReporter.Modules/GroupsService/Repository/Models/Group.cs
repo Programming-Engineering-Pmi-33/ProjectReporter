@@ -24,10 +24,10 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             string ownerId,
             string coOwnerId,
             string gitLink,
-            IEnumerable<Project> projects,
-            IEnumerable<Task> tasks,
-            IEnumerable<GroupMember> members,
-            int id)
+            IEnumerable<Project> projects = null,
+            IEnumerable<Task> tasks = null,
+            IEnumerable<GroupMember> members = null,
+            int id = 0)
         {
             Id = id;
             Name = name;
@@ -36,9 +36,9 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             OwnerId = ownerId;
             CoOwnerId = coOwnerId;
             GitLink = gitLink;
-            Projects = new ReadOnlyCollection<Project>(projects.ToList());
-            Tasks = new ReadOnlyCollection<Task>(tasks.ToList());
-            Members = new ReadOnlyCollection<GroupMember>(members.ToList());
+            Projects = new ReadOnlyCollection<Project>(projects?.ToList() ?? new List<Project>());
+            Tasks = new ReadOnlyCollection<Task>(tasks?.ToList() ?? new List<Task>());
+            Members = new ReadOnlyCollection<GroupMember>(members?.ToList() ?? new List<GroupMember>());
         }
 
         public Group AddCoOwner(string coOwnerId)
@@ -76,16 +76,6 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, projects, Tasks, Members, Id);
         }
 
-        public Group UpdateProject(int projectId, string name, string description, string gitLink)
-        {
-            var project = Projects.First(p => p.Id == projectId);
-            project = project.Update(name, description, gitLink);
-            var updatedProjects = Projects.ToList();
-            updatedProjects.Remove(updatedProjects.Find(p=>p.Id == projectId));
-            updatedProjects.Add(project);
-            return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, updatedProjects, Tasks, Members, Id);
-        }
-
         public Group CreateTask(string name, string description, int points)
         {
             var newTask = new Task(name, description, points, new Report[0]);
@@ -93,7 +83,5 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             updatedTasks.Add(newTask);
             return new Group(Name, Description, Status, OwnerId, CoOwnerId, GitLink, Projects, updatedTasks, Members, Id);
         }
-
-
     }
 }

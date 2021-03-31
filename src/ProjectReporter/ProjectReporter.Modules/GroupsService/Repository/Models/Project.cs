@@ -13,12 +13,12 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
 
         public IReadOnlyCollection<string> MembersIds { get; }
 
-        public Project(string name, string description, string gitLink, IEnumerable<string> membersIds, int id = 0)
+        public Project(string name, string description, string gitLink, IEnumerable<string> membersIds = null, int id = 0)
         {
             Name = name;
             Description = description;
             GitLink = gitLink;
-            MembersIds = new ReadOnlyCollection<string>(membersIds.ToList());
+            MembersIds = new ReadOnlyCollection<string>(membersIds?.ToList() ?? new List<string>());
             Id = id;
         }
 
