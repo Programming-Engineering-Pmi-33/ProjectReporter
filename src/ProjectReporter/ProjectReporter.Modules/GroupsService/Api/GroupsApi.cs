@@ -1,29 +1,21 @@
-﻿using System.Threading.Tasks;
-using ProjectReporter.Modules.GroupsService.Api.Contracts;
+﻿using ProjectReporter.Modules.GroupsService.Api.Contracts;
 using ProjectReporter.Modules.GroupsService.Api.Factories;
 using ProjectReporter.Modules.GroupsService.Repository;
+using ProjectReporter.Modules.GroupsService.Repository.Models;
+using Task = System.Threading.Tasks.Task;
 
 namespace ProjectReporter.Modules.GroupsService.Api
 {
     public class GroupsApi : IGroupsApi
     {
         private readonly IGroupsRepository _repository;
-        private readonly IRepositoryTaskModelMapper _taskModelMapper;
-        private readonly IRepositoryProjectModelMapper _projectModelMapper;
         private readonly IRepositoryGroupModelMapper _groupModelMapper;
-        private readonly IRepositoryReportModelMapper _reportModelMapper;
 
         public GroupsApi(IGroupsRepository repository,
-            IRepositoryTaskModelMapper taskModelMapper,
-            IRepositoryProjectModelMapper projectModelMapper,
-            IRepositoryGroupModelMapper groupModelMapper,
-            IRepositoryReportModelMapper reportModelMapper)
+            IRepositoryGroupModelMapper groupModelMapper)
         {
             _repository = repository;
-            _taskModelMapper = taskModelMapper;
-            _projectModelMapper = projectModelMapper;
             _groupModelMapper = groupModelMapper;
-            _reportModelMapper = reportModelMapper;
         }
 
         public async Task CreateGroup(GroupContract contract, string ownerId)
@@ -58,6 +50,7 @@ namespace ProjectReporter.Modules.GroupsService.Api
 
         public async Task CreateProject(int groupId, ProjectContract contract)
         {
+            //Validation
             var group = await _repository.GetGroup(groupId);
             var updatedGroup = group.CreateProject(contract.Name, contract.Description, contract.GitLink);
             await _repository.UpdateGroup(updatedGroup);
@@ -71,12 +64,12 @@ namespace ProjectReporter.Modules.GroupsService.Api
             await _repository.UpdateGroup(updatedGroup);
         }
 
-        public async Task EditProject(int groupId, ProjectContract contract, string userId)
+        public async Task EditProject(ProjectContract contract, string userId)
         {
             //Validation
-            var group = await _repository.GetGroup(groupId);
-            var updatedGroup = group.UpdateProject(contract.Id, contract.Name, contract.Description,contract.GitLink);
-            await _repository.UpdateGroup(updatedGroup);
+            var project = await _repository.GetProject(contract.Id, userId);
+            var updatedProject = project.Update(contract.Name, contract.Description, contract.GitLink);
+            await _repository.UpdateProject(updatedProject);
         }
 
         public async Task CreateTask(int groupId, TaskContract contract, string userId)
@@ -87,24 +80,37 @@ namespace ProjectReporter.Modules.GroupsService.Api
             await _repository.UpdateGroup(updatedGroup);
         }
 
-        public Task EditTask(TaskContract contract, string ownerId)
+        public async Task EditTask(TaskContract contract, string userId)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var task = await _repository.GetTask(contract.Id, userId);
+            var updatedTask = task.Update(contract.Name, contract.Description, contract.Points);
+            await _repository.UpdateTask(updatedTask);
         }
 
-        public Task CreateReport(int taskId, ReportContract contract, string ownerId)
+        public async Task CreateReport(int taskId, ReportContract contract, string userId)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var task = await _repository.GetTask(taskId, userId);
+            var report = new Report(contract.Done, contract.Planned, contract.Issues);
+            var updatedTask = task.AddReport(report);
+            await _repository.UpdateTask(updatedTask);
         }
 
-        public Task EditReport(int taskId, ReportContract contract, string ownerId)
+        public async Task EditReport(int taskId, ReportContract contract, string userId)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var report = await _repository.GetReport(contract.Id, userId);
+            var updatedReport = report.Update(contract.Done, contract.Planned, contract.Issues);
+            await _repository.UpdateReport(updatedReport);
         }
 
-        public Task EvaluateReport(int reportId, int points, string ownerId)
+        public async Task EvaluateReport(int reportId, double points, string userId)
         {
-            throw new System.NotImplementedException();
+            //Validation
+            var report = await _repository.GetReport(reportId, userId);
+            var updatedReport = report.Evaluate(points);
+            await _repository.UpdateReport(updatedReport);
         }
     }
 }

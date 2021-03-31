@@ -9,5 +9,11 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         Task AddGroup(Group group);
         Task<Group> GetGroup(int groupId);
         Task UpdateGroup(Group group);
+        Task<Project> GetProject(int projectId, string userId);
+        Task UpdateProject(Project project);
+        Task<Models.Task> GetTask(int taskId, string userId);
+        Task UpdateTask(Models.Task task);
+        Task<Report> GetReport(int reportId, string userId);
+        Task UpdateReport(Report report);
     }
 }
