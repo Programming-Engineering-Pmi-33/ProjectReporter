@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjectReporter.Modules.GroupsService.Storage
 {
@@ -8,6 +9,11 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Report> Reports { get; set; }
+
+        public IQueryable<Group> GetGroups() =>
+            Groups.Include(g => g.Members).Include(g => g.Projects).ThenInclude(g => g.Reports)
+                .Include(g => g.Tasks)
+                .ThenInclude(g => g.Reports);
 
         public GroupsStorage(DbContextOptions<GroupsStorage> options)
             : base(options)

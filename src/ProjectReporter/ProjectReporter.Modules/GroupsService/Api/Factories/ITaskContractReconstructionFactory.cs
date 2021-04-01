@@ -3,8 +3,8 @@ using ProjectReporter.Modules.GroupsService.Repository.Models;
 
 namespace ProjectReporter.Modules.GroupsService.Api.Factories
 {
-    public interface IRepositoryReportModelMapper
+    public interface ITaskContractReconstructionFactory
     {
-        Report Map(ReportContract contract, string userId);
+        TaskContract Create(Task task);
     }
 }

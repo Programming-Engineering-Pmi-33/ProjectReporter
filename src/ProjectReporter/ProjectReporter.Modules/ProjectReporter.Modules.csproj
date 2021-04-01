@@ -25,4 +25,8 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="GroupsService\Api\Contracts\" />
+  </ItemGroup>
 </Project>

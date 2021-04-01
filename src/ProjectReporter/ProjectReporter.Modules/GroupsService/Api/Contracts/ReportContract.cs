@@ -2,9 +2,9 @@
 {
     public class ReportContract
     {
-        public int Id { get; }
-        public string Done { get; }
-        public string Planned { get; }
-        public string Issues { get; }
+        public int Id { get; set; }
+        public string Done { get; set; }
+        public string Planned { get; set; }
+        public string Issues { get; set; }
     }
 }

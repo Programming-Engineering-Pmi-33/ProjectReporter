@@ -7,8 +7,10 @@ namespace ProjectReporter.Modules.GroupsService.Repository
     public interface IGroupsRepository
     {
         Task AddGroup(Group group);
+        Task<Group[]> GetGroups(string userId);
         Task<Group> GetGroup(int groupId);
         Task UpdateGroup(Group group);
+        Task<GroupMember[]> GetInvites(string userId);
         Task<Project> GetProject(int projectId, string userId);
         Task UpdateProject(Project project);
         Task<Models.Task> GetTask(int taskId, string userId);
