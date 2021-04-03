@@ -13,15 +13,15 @@ namespace ProjectReporter.Modules.GroupsService.Api
         Task Invite(int groupId, string ownerId, params string[] usersIds);
         Task AcceptInvitation(int groupId, string invitation, string userId);
         Task<ProjectContract[]> GetProjects(int groupId, string userId);
-        Task CreateProject(int groupId, ProjectContract contract, string userId);
+        Task CreateProject(ProjectContract contract, string userId);
         Task AddUsersToProject(int groupId, int projectId, string ownerId, params string[] usersIds);
         Task EditProject(ProjectContract contract, string userId);
-        Task CreateTask(int groupId, TaskContract contract, string ownerId);
+        Task CreateTask(TaskContract contract, string ownerId);
         Task<TaskContract[]> GetTasks(int groupId, string userId);
         Task EditTask(TaskContract contract, string userId);
         Task<ReportContract[]> GetReports(int groupId, string userId);
-        Task CreateReport(int taskId, ReportContract contract, string userId);
-        Task EditReport(int taskId, ReportContract contract, string userId);
+        Task CreateReport(ReportContract contract, string userId);
+        Task EditReport(ReportContract contract, string userId);
         Task EvaluateReport(int reportId, double points, string userId);
     }
 }
