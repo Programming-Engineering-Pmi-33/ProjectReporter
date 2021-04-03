@@ -11,7 +11,9 @@ namespace ProjectReporter.Modules.GroupsService.Api.Factories
                 Id = task.Id,
                 Name = task.Name,
                 Description = task.Description,
-                Points = task.Points
+                Points = task.Points,
+                StartDate = task.StartDateTime,
+                EndDate = task.EndDateTime
             };
     }
 }

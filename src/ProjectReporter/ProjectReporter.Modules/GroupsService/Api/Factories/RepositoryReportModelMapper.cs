@@ -4,10 +4,12 @@ using ProjectReporter.Modules.GroupsService.Repository.Models;
 
 namespace ProjectReporter.Modules.GroupsService.Api.Factories
 {
-    public class RepositoryReportModelMapper: IRepositoryReportModelMapper
+    public class RepositoryReportModelMapper : IRepositoryReportModelMapper
     {
         public Report Map(ReportContract contract, string userId) =>
-            new(contract.Done,
+            new(contract.TaskId,
+                contract.ProjectId,
+                contract.Done,
                 contract.Planned,
                 contract.Issues,
                 userId,

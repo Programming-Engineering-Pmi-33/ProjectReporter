@@ -3,7 +3,7 @@ using ProjectReporter.Modules.GroupsService.Repository.Models;
 
 namespace ProjectReporter.Modules.GroupsService.Api.Factories
 {
-    public class RepositoryGroupModelMapper: IRepositoryGroupModelMapper
+    public class RepositoryGroupModelMapper : IRepositoryGroupModelMapper
     {
         public Group Map(GroupContract contract, string ownerId) =>
             new(contract.Name,

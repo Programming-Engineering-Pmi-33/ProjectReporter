@@ -3,7 +3,7 @@ using ProjectReporter.Modules.GroupsService.Repository.Models;
 
 namespace ProjectReporter.Modules.GroupsService.Api.Factories
 {
-    public class ProjectContractReconstructionFactory: IProjectContractReconstructionFactory
+    public class ProjectContractReconstructionFactory : IProjectContractReconstructionFactory
     {
         public ProjectContract Create(Project project) =>
             new()
