@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ProjectReporter.Modules.GroupsService.Repository.Models;
 using Task = System.Threading.Tasks.Task;
 
@@ -13,9 +14,14 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         Task<GroupMember[]> GetInvites(string userId);
         Task<Project> GetProject(int projectId, string userId);
         Task UpdateProject(Project project);
-        Task<Models.Task> GetTask(int taskId, string userId);
+        Task<Models.Task> GetTask(int taskId);
         Task UpdateTask(Models.Task task);
-        Task<Report> GetReport(int reportId, string userId);
+        Task<Report> GetReport(int reportId);
         Task UpdateReport(Report report);
+        Task AddMembersToGroup(IEnumerable<GroupMember> members);
+        Task UpdateGroupMember(GroupMember member);
+        Task AddProject(Project project);
+        Task AddTask(Models.Task task);
+        Task AddReport(Report report);
     }
 }

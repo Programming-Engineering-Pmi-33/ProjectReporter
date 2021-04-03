@@ -14,22 +14,36 @@ namespace ProjectReporter.Modules.GroupsService
         public static void AddServices(IServiceCollection services, IConfiguration configuration)
         {
             AddDbContext(services, configuration);
-            services.AddTransient(typeof(IStorageGroupReconstructionFactory), typeof(StorageGroupReconstructionFactory));
-            services.AddTransient(typeof(IStorageProjectReconstructionFactory), typeof(StorageProjectReconstructionFactory));
-            services.AddTransient(typeof(IStorageTaskReconstructionFactory), typeof(StorageTaskReconstructionFactory));
-            services.AddTransient(typeof(IStorageReportReconstructionFactory), typeof(StorageReportReconstructionFactory));
-            services.AddTransient(typeof(IGroupsRepository), typeof(GroupsRepository));
-            services.AddTransient(typeof(IGroupsApi), typeof(GroupsApi));
+            services.AddTransient(typeof(IGroupContractReconstructionFactory),
+                typeof(GroupContractReconstructionFactory));
+            services.AddTransient(typeof(IProjectContractReconstructionFactory),
+                typeof(ProjectContractReconstructionFactory));
+            services.AddTransient(typeof(IReportContractReconstructionFactory),
+                typeof(ReportContractReconstructionFactory));
+            services.AddTransient(typeof(ITaskContractReconstructionFactory),
+                typeof(TaskContractReconstructionFactory));
             services.AddTransient(typeof(IRepositoryGroupModelMapper), typeof(RepositoryGroupModelMapper));
             services.AddTransient(typeof(IRepositoryProjectModelMapper), typeof(RepositoryProjectModelMapper));
             services.AddTransient(typeof(IRepositoryReportModelMapper), typeof(RepositoryReportModelMapper));
             services.AddTransient(typeof(IRepositoryTaskModelMapper), typeof(RepositoryTaskModelMapper));
+
+            services.AddTransient(typeof(IStorageGroupReconstructionFactory),
+                typeof(StorageGroupReconstructionFactory));
             services.AddTransient(typeof(IStorageGroupMemberReconstructionFactory),
                 typeof(StorageGroupMemberReconstructionFactory));
-            services.AddTransient(typeof(IGroupContractReconstructionFactory), typeof(GroupContractReconstructionFactory));
-            services.AddTransient(typeof(IProjectContractReconstructionFactory), typeof(ProjectContractReconstructionFactory));
-            services.AddTransient(typeof(IReportContractReconstructionFactory), typeof(ReportContractReconstructionFactory));
-            services.AddTransient(typeof(ITaskContractReconstructionFactory), typeof(TaskContractReconstructionFactory));
+            services.AddTransient(typeof(IStorageProjectReconstructionFactory),
+                typeof(StorageProjectReconstructionFactory));
+            services.AddTransient(typeof(IStorageTaskReconstructionFactory), typeof(StorageTaskReconstructionFactory));
+            services.AddTransient(typeof(IStorageReportReconstructionFactory),
+                typeof(StorageReportReconstructionFactory));
+            services.AddTransient(typeof(IStorageGroupMapper), typeof(StorageGroupMapper));
+            services.AddTransient(typeof(IStorageGroupMemberMapper), typeof(StorageGroupMemberMapper));
+            services.AddTransient(typeof(IStorageProjectMapper), typeof(StorageProjectMapper));
+            services.AddTransient(typeof(IStorageTaskMapper), typeof(StorageTaskMapper));
+            services.AddTransient(typeof(IStorageReportMapper), typeof(StorageReportMapper));
+
+            services.AddTransient(typeof(IGroupsRepository), typeof(GroupsRepository));
+            services.AddTransient(typeof(IGroupsApi), typeof(GroupsApi));
         }
 
         private static void AddDbContext(IServiceCollection services, IConfiguration configuration)

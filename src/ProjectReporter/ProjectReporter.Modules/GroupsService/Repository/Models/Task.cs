@@ -36,17 +36,14 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             Id = id;
         }
 
-        public Task Update(string name,
-            string description,
-            int points,
-            DateTime startDate,
-            DateTime endDate) =>
+        //Validation
+        public Task Update(Task updatedTask) =>
             new(GroupId,
-                name,
-                description,
-                points,
-                startDate,
-                endDate,
+                updatedTask.Name,
+                updatedTask.Description,
+                updatedTask.Points,
+                updatedTask.StartDateTime,
+                updatedTask.EndDateTime,
                 Reports,
                 Id);
     }

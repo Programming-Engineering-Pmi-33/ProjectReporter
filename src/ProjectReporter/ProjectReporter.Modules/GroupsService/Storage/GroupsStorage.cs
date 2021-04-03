@@ -9,11 +9,26 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Report> Reports { get; set; }
+        public DbSet<GroupMember> GroupMembers { get; set; }
 
         public IQueryable<Group> GetGroups() =>
-            Groups.Include(g => g.Members).Include(g => g.Projects).ThenInclude(g => g.Reports)
+            Groups.Include(g => g.Members)
+                .Include(g => g.Projects).ThenInclude(g => g.Reports)
                 .Include(g => g.Tasks)
                 .ThenInclude(g => g.Reports);
+
+        public IQueryable<Project> GetProjects() =>
+            Projects.Include(p => p.Group)
+                .Include(p => p.Members)
+                .Include(p => p.Reports);
+
+        public IQueryable<Task> GetTasks() =>
+            Tasks.Include(t => t.Group)
+                .Include(t => t.Reports);
+
+        public IQueryable<Report> GetReports() =>
+            Reports.Include(r => r.Project)
+                .Include(r => r.Task);
 
         public GroupsStorage(DbContextOptions<GroupsStorage> options)
             : base(options)
