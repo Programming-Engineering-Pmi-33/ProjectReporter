@@ -63,7 +63,7 @@ namespace ProjectReporter.Service.Infrastructure.Database
             var group = new AcademicGroup
             {
                 Name = GetRandStr(MinNamesLen, MaxNamesLen, true),
-                Department = department
+                Faculty = faculty
             };
             for (var i = 0; i < countUsers; i++)
             {

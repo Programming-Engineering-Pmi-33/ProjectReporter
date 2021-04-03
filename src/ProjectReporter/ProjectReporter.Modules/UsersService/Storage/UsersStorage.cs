@@ -26,12 +26,12 @@ namespace ProjectReporter.Modules.UsersService.Storage
             modelBuilder.Entity<Faculty>().Property(f => f.DateTimeCreated).ValueGeneratedOnAdd();
             modelBuilder.Entity<Faculty>().Property(f => f.DateTimeModified).ValueGeneratedOnAddOrUpdate();
             modelBuilder.Entity<Faculty>().HasMany(f => f.Departments).WithOne(d => d.Faculty);
+            modelBuilder.Entity<Faculty>().HasMany(d => d.AcademicGroups).WithOne(ac => ac.Faculty);
             modelBuilder.Entity<Faculty>().ToTable("Faculties");
 
             modelBuilder.Entity<Department>().HasIndex(d => d.Name).IsUnique();
             modelBuilder.Entity<Department>().Property(d => d.DateTimeCreated).ValueGeneratedOnAdd();
             modelBuilder.Entity<Department>().Property(d => d.DateTimeModified).ValueGeneratedOnAddOrUpdate();
-            modelBuilder.Entity<Department>().HasMany(d => d.AcademicGroups).WithOne(ac => ac.Department);
             modelBuilder.Entity<Department>().HasMany(d => d.Teachers).WithOne(t => t.Department);
             modelBuilder.Entity<Department>().ToTable("Departments");
 
