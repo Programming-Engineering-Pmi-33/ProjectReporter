@@ -3,14 +3,16 @@
     public class GroupMember
     {
         public int Id { get; }
+        public int GroupId { get; }
         public string UserId { get; }
         public string InviterId { get; }
         public string Guid { get; }
         public bool IsActive { get; }
 
-        public GroupMember(string userId, string inviterId, string guid, bool isActive, int id = 0)
+        public GroupMember(int groupId, string userId, string inviterId, string guid, bool isActive, int id = 0)
         {
             Id = id;
+            GroupId = groupId;
             UserId = userId;
             InviterId = inviterId;
             Guid = guid;
@@ -20,7 +22,7 @@
         public GroupMember ActivateMember()
         {
             //Validation
-            return new(UserId, InviterId, Guid, true, Id);
+            return new(GroupId, UserId, InviterId, Guid, true, Id);
         }
     }
 }

@@ -7,14 +7,16 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
     public record Project
     {
         public int Id { get; }
+        public int GroupId { get; }
         public string Name { get; }
         public string Description { get; }
         public string GitLink { get; }
 
         public IReadOnlyCollection<string> MembersIds { get; }
 
-        public Project(string name, string description, string gitLink, IEnumerable<string> membersIds = null, int id = 0)
+        public Project(int groupId, string name, string description, string gitLink, IEnumerable<string> membersIds = null, int id = 0)
         {
+            GroupId = groupId;
             Name = name;
             Description = description;
             GitLink = gitLink;
@@ -26,12 +28,12 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
         {
             var ids = MembersIds.ToList();
             ids.AddRange(usersIds);
-            return new Project(Name, Description, GitLink, ids, Id);
+            return new Project(GroupId, Name, Description, GitLink, ids, Id);
         }
 
         public Project Update(string name, string description, string gitLink)
         {
-            return new(name, description, gitLink, MembersIds, Id);
+            return new(GroupId, name, description, gitLink, MembersIds, Id);
         }
     }
 }
