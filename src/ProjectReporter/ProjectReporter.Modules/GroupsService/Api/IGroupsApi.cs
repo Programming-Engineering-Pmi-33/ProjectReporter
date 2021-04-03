@@ -9,6 +9,7 @@ namespace ProjectReporter.Modules.GroupsService.Api
     {
         Task CreateGroup(GroupContract contract, string ownerId);
         Task<GroupContract[]> GetGroups(string userId);
+        Task UpdateGroup(GroupContract contract, string ownerId);
         Task AddCoOwner(int groupId, string ownerId, string coOwnerId);
         Task Invite(int groupId, string ownerId, params string[] usersIds);
         Task AcceptInvitation(int groupId, string invitation, string userId);

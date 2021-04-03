@@ -60,6 +60,12 @@ namespace ProjectReporter.Modules.GroupsService.Api
                 .ToArray();
         }
 
+        public async Task UpdateGroup(GroupContract contract, string ownerId)
+        {
+            var group = _groupModelMapper.Map(contract, ownerId);
+            await _repository.UpdateGroup(group);
+        }
+
         public async Task AddCoOwner(int groupId, string ownerId, string coOwnerId)
         {
             var group = await _repository.GetGroup(groupId);
