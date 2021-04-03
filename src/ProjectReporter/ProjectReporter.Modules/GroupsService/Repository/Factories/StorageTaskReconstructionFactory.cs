@@ -13,9 +13,12 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
         }
 
         public Task Create(Storage.Task task) =>
-            new(task.Name,
+            new(task.GroupId,
+                task.Name,
                 task.Description,
                 task.Points,
+                task.StartDateTime,
+                task.EndDateTime,
                 task.Reports.Select(r => _reportReconstructionFactory.Create(r))
                     .ToArray(),
                 task.Id);
