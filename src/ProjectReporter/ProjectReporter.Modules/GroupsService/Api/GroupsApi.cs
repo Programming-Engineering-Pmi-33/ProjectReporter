@@ -132,7 +132,7 @@ namespace ProjectReporter.Modules.GroupsService.Api
 
         public async Task EditProject(ProjectContract contract, string userId)
         {
-            var project = await _repository.GetProject(contract.Id, userId);
+            var project = await _repository.GetProject(contract.Id);
             //Name used. User owner.
             var updatedProject = project.Update(contract.Name, contract.Description, contract.GitLink);
             await _repository.UpdateProject(updatedProject);

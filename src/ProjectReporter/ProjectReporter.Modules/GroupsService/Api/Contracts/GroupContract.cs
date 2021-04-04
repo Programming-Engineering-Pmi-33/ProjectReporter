@@ -7,5 +7,6 @@
         public int Status { get; set; }
         public string CoOwnerId { get; set; }
         public string GitLink { get; set; }
+        public string[] MembersIds { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ProjectReporter.Modules.GroupsService.Api.Contracts;
+﻿using System.Linq;
+using ProjectReporter.Modules.GroupsService.Api.Contracts;
 using ProjectReporter.Modules.GroupsService.Repository.Models;
 
 namespace ProjectReporter.Modules.GroupsService.Api.Factories
@@ -8,11 +9,12 @@ namespace ProjectReporter.Modules.GroupsService.Api.Factories
         public GroupContract Create(Group group) =>
             new()
             {
-                Name = @group.Name,
-                CoOwnerId = @group.CoOwnerId,
-                Description = @group.Description,
-                GitLink = @group.GitLink,
-                Status = @group.Status
+                Name = group.Name,
+                CoOwnerId = group.CoOwnerId,
+                Description = group.Description,
+                GitLink = group.GitLink,
+                Status = group.Status,
+                MembersIds = group.Members.Select(m => m.UserId).ToArray()
             };
     }
 }

@@ -1,4 +1,5 @@
-﻿using ProjectReporter.Modules.GroupsService.Api.Contracts;
+﻿using System.Linq;
+using ProjectReporter.Modules.GroupsService.Api.Contracts;
 using ProjectReporter.Modules.GroupsService.Repository.Models;
 
 namespace ProjectReporter.Modules.GroupsService.Api.Factories
@@ -11,7 +12,8 @@ namespace ProjectReporter.Modules.GroupsService.Api.Factories
                 Id = project.Id,
                 Name = project.Name,
                 Description = project.Description,
-                GitLink = project.GitLink
+                GitLink = project.GitLink,
+                MembersIds = project.MembersIds.ToArray()
             };
     }
 }

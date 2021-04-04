@@ -7,5 +7,6 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public string GitLink { get; set; }
+        public string[] MembersIds { get; set; }
     }
 }
