@@ -12,7 +12,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         Task<Group> GetGroup(int groupId);
         Task UpdateGroup(Group group);
         Task<GroupMember[]> GetInvites(string userId);
-        Task<Project> GetProject(int projectId, string userId);
+        Task<Project> GetProject(int projectId);
         Task UpdateProject(Project project);
         Task<Models.Task> GetTask(int taskId);
         Task UpdateTask(Models.Task task);
@@ -23,5 +23,6 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         Task AddProject(Project project);
         Task AddTask(Models.Task task);
         Task AddReport(Report report);
+        Task<Report[]> GetReports(string userId = null);
     }
 }

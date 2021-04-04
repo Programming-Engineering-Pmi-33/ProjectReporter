@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ProjectReporter.Modules.GroupsService.Exceptions;
 using ProjectReporter.Modules.GroupsService.Repository.Factories;
 using ProjectReporter.Modules.GroupsService.Storage;
 using Group = ProjectReporter.Modules.GroupsService.Repository.Models.Group;
@@ -37,7 +38,8 @@ namespace ProjectReporter.Modules.GroupsService.Repository
             IStorageGroupMapper storageGroupMapper,
             IStorageProjectMapper storageProjectMapper,
             IStorageTaskMapper storageTaskMapper,
-            IStorageReportMapper storageReportMapper)
+            IStorageReportMapper storageReportMapper,
+            IStorageGroupMemberMapper storageGroupMemberMapper)
         {
             _storageGroupMapper = storageGroupMapper;
             _groupReconstructionFactory = groupReconstructionFactory;
@@ -49,6 +51,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
             _storageProjectMapper = storageProjectMapper;
             _storageTaskMapper = storageTaskMapper;
             _storageReportMapper = storageReportMapper;
+            _storageGroupMemberMapper = storageGroupMemberMapper;
         }
 
         public async Task AddGroup(Group group)
@@ -64,12 +67,15 @@ namespace ProjectReporter.Modules.GroupsService.Repository
                 g.OwnerId == userId || g.CoOwnerId == userId || g.Members.Exists(m => m.UserId == userId))
                 .ToArrayAsync();
 
-            return groups.Select(g => _groupReconstructionFactory.Create(g)).ToArray();
+            return groups.Length is 0
+                ? throw new GroupsNotFoundException()
+                : groups.Select(g => _groupReconstructionFactory.Create(g)).ToArray();
         }
 
         public async Task UpdateGroup(Group group)
         {
             var storageGroupToUpdate = await _storage.GetGroups().FirstAsync(g => g.Id == group.Id);
+            if (storageGroupToUpdate == null) throw new GroupsNotFoundException(group.Id);
             _storageGroupMapper.Map(group, storageGroupToUpdate);
             _storage.Update(storageGroupToUpdate);
             await _storage.SaveChangesAsync();
@@ -77,24 +83,31 @@ namespace ProjectReporter.Modules.GroupsService.Repository
 
         public async Task<GroupMember[]> GetInvites(string userId)
         {
-            return
-                (await _storage.GetGroups().Where(g => g.Members.Exists(m => m.UserId == userId && !m.IsActive))
-                    .ToArrayAsync()).Select(m =>
-                    _groupMemberReconstructionFactory.Map(m.Members.First(u => u.UserId == userId)))
-                .ToArray();
+            var invites = await _storage.GetGroups()
+                .Where(g => g.Members.Exists(m => m.UserId == userId && !m.IsActive))
+                .ToArrayAsync();
+
+            return invites.Length is 0
+                ? throw new InvitesNotFoundException()
+                : invites
+                    .Select(m => _groupMemberReconstructionFactory.Map(m.Members.First(u => u.UserId == userId)))
+                    .ToArray();
         }
 
-        public async Task<Project> GetProject(int projectId, string userId)
+        public async Task<Project> GetProject(int projectId)
         {
-            //Group validation.
-            return _projectReconstructionFactory.Create(await _storage.GetProjects()
-                .FirstAsync(p => p.Id == projectId));
+            var project = await _storage.GetProjects()
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            return project is null
+                ? throw new ProjectNotFoundException(projectId)
+                : _projectReconstructionFactory.Create(project);
         }
 
         public async Task UpdateProject(Project project)
         {
-            //Validation
             var storageProject = await _storage.GetProjects().FirstOrDefaultAsync(p => p.Id == project.Id);
+            if (storageProject is null) throw new ProjectNotFoundException(project.Id);
             _storageProjectMapper.Map(project, storageProject);
             _storage.Projects.Update(storageProject);
             await _storage.SaveChangesAsync();
@@ -102,30 +115,50 @@ namespace ProjectReporter.Modules.GroupsService.Repository
 
         public async Task<Models.Task> GetTask(int taskId)
         {
-            //Task validation
-            return _taskReconstructionFactory.Create(await _storage.GetTasks()
-                .FirstOrDefaultAsync(t => t.Id == taskId));
+            var task = await _storage.GetTasks()
+                .FirstOrDefaultAsync(t => t.Id == taskId);
+
+            return task is null
+                ? throw new TasksNotFoundException(taskId)
+                : _taskReconstructionFactory.Create(task);
         }
 
         public async Task UpdateTask(Models.Task task)
         {
-            //Validation
             var storageTask = await _storage.GetTasks().FirstOrDefaultAsync(t => t.Id == task.Id);
+            if (storageTask is null) throw new TasksNotFoundException(task.Id);
             _storageTaskMapper.Map(task, storageTask);
             _storage.Tasks.Update(storageTask);
             await _storage.SaveChangesAsync();
         }
 
+        public async Task<Report[]> GetReports(string userId = null)
+        {
+            var reports = userId is null
+                ? await _storage.GetReports()
+                    .ToArrayAsync()
+                : await _storage.GetReports()
+                    .Where(r => r.UserId == userId)
+                    .ToArrayAsync();
+
+            if (reports.Length is 0) throw new ReportsNotFoundException();
+
+            return reports.Select(r => _reportReconstructionFactory.Create(r)).ToArray();
+        }
+
         public async Task<Report> GetReport(int reportId)
         {
-            //Validation
-            return _reportReconstructionFactory.Create(await _storage.GetReports()
-                .FirstOrDefaultAsync(r => r.Id == reportId));
+            var report = await _storage.GetReports().FirstOrDefaultAsync(r => r.Id == reportId);
+
+            return report is null
+                ? throw new ReportsNotFoundException(reportId)
+                : _reportReconstructionFactory.Create(report);
         }
 
         public async Task UpdateReport(Report report)
         {
             var storageReport = await _storage.GetReports().FirstOrDefaultAsync(r => r.Id == report.Id);
+            if (storageReport is null) throw new ReportsNotFoundException(report.Id);
             _storageReportMapper.Map(report, storageReport);
             _storage.Reports.Update(storageReport);
             await _storage.SaveChangesAsync();
@@ -141,7 +174,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         public async Task UpdateGroupMember(GroupMember member)
         {
             var storageMember = await _storage.GroupMembers.FirstOrDefaultAsync(m => m.Id == member.Id);
-            //Validation
+            if (storageMember is null) throw new MemberIsNotFoundException(member.UserId);
             _storageGroupMemberMapper.Map(member, storageMember);
             await _storage.SaveChangesAsync();
         }
@@ -169,14 +202,10 @@ namespace ProjectReporter.Modules.GroupsService.Repository
 
         public async Task<Group> GetGroup(int groupId)
         {
-            //Validation
-            return _groupReconstructionFactory.Create(await _storage.GetGroups()
-                .FirstOrDefaultAsync(g => g.Id == groupId));
+            var group = await _storage.GetGroups().FirstOrDefaultAsync(g => g.Id == groupId);
+            if (group is null) throw new GroupsNotFoundException(groupId);
+            return _groupReconstructionFactory.Create(group);
         }
-
-        //Get all
-        //Get by Id
-
         //Is update required.
     }
 }
