@@ -100,14 +100,23 @@ namespace ProjectReporter.Modules.GroupsService.Repository
                 .FirstOrDefaultAsync(p => p.Id == projectId);
 
             return project is null
-                ? throw new ProjectNotFoundException(projectId)
+                ? throw new ProjectsNotFoundException(projectId)
                 : _projectReconstructionFactory.Create(project);
+        }
+
+        public async Task<Project[]> GetProjects(int groupId, string userId)
+        {
+            var group = await _storage.GetGroups().FirstOrDefaultAsync(g => g.Id == groupId);
+            if (group is null) throw new GroupsNotFoundException(groupId);
+            var projects = group.Projects.Where(p => p.Members.Exists(m => m.UserId == userId)).ToArray();
+            if (projects.Length is 0) throw new ProjectsNotFoundException();
+            return projects.Select(p => _projectReconstructionFactory.Create(p)).ToArray();
         }
 
         public async Task UpdateProject(Project project)
         {
             var storageProject = await _storage.GetProjects().FirstOrDefaultAsync(p => p.Id == project.Id);
-            if (storageProject is null) throw new ProjectNotFoundException(project.Id);
+            if (storageProject is null) throw new ProjectsNotFoundException(project.Id);
             _storageProjectMapper.Map(project, storageProject);
             _storage.Projects.Update(storageProject);
             await _storage.SaveChangesAsync();
@@ -206,6 +215,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
             if (group is null) throw new GroupsNotFoundException(groupId);
             return _groupReconstructionFactory.Create(group);
         }
-        //Is update required.
+
+        //Is update required?
     }
 }

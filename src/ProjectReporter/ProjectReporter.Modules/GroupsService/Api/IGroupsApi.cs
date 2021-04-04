@@ -11,6 +11,7 @@ namespace ProjectReporter.Modules.GroupsService.Api
         Task<GroupContract[]> GetGroups(string userId);
         Task UpdateGroup(GroupContract contract, string ownerId);
         Task AddCoOwner(int groupId, string ownerId, string coOwnerId);
+        Task RemoveCoOwner(int groupId, string ownerId);
         Task Invite(int groupId, string ownerId, params string[] usersIds);
         Task AcceptInvitation(int groupId, string invitation, string userId);
         Task<ProjectContract[]> GetProjects(int groupId, string userId);
@@ -23,6 +24,6 @@ namespace ProjectReporter.Modules.GroupsService.Api
         Task<ReportContract[]> GetReports(int groupId, string userId);
         Task CreateReport(ReportContract contract, string userId);
         Task EditReport(ReportContract contract, string userId);
-        Task EvaluateReport(int reportId, double points, string userId);
+        Task EvaluateReport(int groupId, int reportId, double points, string userId);
     }
 }

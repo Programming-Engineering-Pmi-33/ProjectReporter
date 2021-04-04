@@ -13,6 +13,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         Task UpdateGroup(Group group);
         Task<GroupMember[]> GetInvites(string userId);
         Task<Project> GetProject(int projectId);
+        Task<Project[]> GetProjects(int groupId, string userId);
         Task UpdateProject(Project project);
         Task<Models.Task> GetTask(int taskId);
         Task UpdateTask(Models.Task task);
