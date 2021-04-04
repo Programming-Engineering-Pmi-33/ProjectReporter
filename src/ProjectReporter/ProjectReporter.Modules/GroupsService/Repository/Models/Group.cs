@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ProjectReporter.Modules.GroupsService.Exceptions;
 
 namespace ProjectReporter.Modules.GroupsService.Repository.Models
 {
@@ -42,12 +43,23 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
 
         public Group AddCoOwner(string coOwnerId)
         {
-            //Validation
-            return new(Name, Description, Status, OwnerId, coOwnerId, GitLink, Projects, Tasks, Members, Id);
+            if (CoOwnerId is not null) throw new GroupsModelException(CoOwnerId);
+            return new Group(Name, Description, Status, OwnerId, coOwnerId, GitLink, Projects, Tasks, Members, Id);
         }
 
-        public Group Update(Group updated) =>
-            new(Name, updated.Description, updated.Status, OwnerId, CoOwnerId, updated.GitLink, Projects,
-                Tasks, Members, Id);
+        public Group RemoveCoOwner()
+        {
+            return new(Name, Description, Status, OwnerId, null, GitLink, Projects, Tasks, Members, Id);
+        }
+
+        public Group Update(Group updated)
+        {
+            if (updated.Name != Name) throw new GroupsModelException(nameof(Name));
+            if (updated.Id != Id) throw new GroupsModelException(nameof(Id));
+
+            return new Group(Name, updated.Description, updated.Status, OwnerId, CoOwnerId, updated.GitLink, Projects,
+                 Tasks, Members, Id);
+        }
+
     }
 }

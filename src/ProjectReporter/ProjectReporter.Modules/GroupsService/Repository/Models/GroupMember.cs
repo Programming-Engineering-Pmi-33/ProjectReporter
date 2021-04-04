@@ -1,4 +1,6 @@
-﻿namespace ProjectReporter.Modules.GroupsService.Repository.Models
+﻿using ProjectReporter.Modules.GroupsService.Exceptions;
+
+namespace ProjectReporter.Modules.GroupsService.Repository.Models
 {
     public class GroupMember
     {
@@ -21,8 +23,8 @@
 
         public GroupMember ActivateMember()
         {
-            //Validation
-            return new(GroupId, UserId, InviterId, Guid, true, Id);
+            if (IsActive) throw new GroupsModelException(nameof(IsActive));
+            return new GroupMember(GroupId, UserId, InviterId, Guid, true, Id);
         }
     }
 }

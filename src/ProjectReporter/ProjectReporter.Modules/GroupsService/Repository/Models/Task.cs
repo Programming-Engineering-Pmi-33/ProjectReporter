@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ProjectReporter.Modules.GroupsService.Exceptions;
 
 namespace ProjectReporter.Modules.GroupsService.Repository.Models
 {
@@ -36,9 +37,11 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             Id = id;
         }
 
-        //Validation
-        public Task Update(Task updatedTask) =>
-            new(GroupId,
+        public Task Update(Task updatedTask)
+        {
+            if (updatedTask.GroupId != GroupId) throw new GroupsModelException(nameof(GroupId));
+            if (updatedTask.Id != Id) throw new GroupsModelException(nameof(Id));
+            return new Task(GroupId,
                 updatedTask.Name,
                 updatedTask.Description,
                 updatedTask.Points,
@@ -46,5 +49,6 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
                 updatedTask.EndDateTime,
                 Reports,
                 Id);
+        }
     }
 }

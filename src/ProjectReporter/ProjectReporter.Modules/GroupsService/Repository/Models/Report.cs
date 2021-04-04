@@ -1,4 +1,6 @@
-﻿namespace ProjectReporter.Modules.GroupsService.Repository.Models
+﻿using ProjectReporter.Modules.GroupsService.Exceptions;
+
+namespace ProjectReporter.Modules.GroupsService.Repository.Models
 {
     public record Report
     {
@@ -30,14 +32,21 @@
             UserId = userId;
         }
 
-        public Report Update(string done, string planned, string issues)
+        public Report Update(Report report)
         {
-            return new(TaskId, ProjectId, done, planned, issues, UserId, Points, Id);
+            if (UserId != report.UserId) throw new UserNotOwnerException();
+            if (Points != null || report.Points != null) throw new AlreadyEvaluatedReportException();
+            if (TaskId != report.TaskId) throw new GroupsModelException(nameof(TaskId));
+            if (ProjectId != report.ProjectId) throw new GroupsModelException(nameof(ProjectId));
+            if (Id != report.Id) throw new GroupsModelException(nameof(Id));
+
+            return new Report(TaskId, ProjectId, report.Done, report.Planned, report.Issues, UserId, Points, Id);
         }
 
-        public Report Evaluate(double? points)
+        public Report Evaluate(double points)
         {
-            return new(TaskId, ProjectId, Done, Planned, Issues, UserId, points, Id);
+            if (points < 0) throw new IncorrectPointsException();
+            return new Report(TaskId, ProjectId, Done, Planned, Issues, UserId, points, Id);
         }
     }
 }

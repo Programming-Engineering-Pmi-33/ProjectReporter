@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ProjectReporter.Modules.GroupsService.Exceptions;
 
 namespace ProjectReporter.Modules.GroupsService.Repository.Models
 {
@@ -31,9 +32,11 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Models
             return new Project(GroupId, Name, Description, GitLink, ids, Id);
         }
 
-        public Project Update(string name, string description, string gitLink)
+        public Project Update(Project project)
         {
-            return new(GroupId, name, description, gitLink, MembersIds, Id);
+            if (project.Id != Id) throw new GroupsModelException(nameof(Id));
+            if (project.GroupId != GroupId) throw new GroupsModelException(nameof(GroupId));
+            return new Project(GroupId, project.Name, project.Description, project.GitLink, MembersIds, Id);
         }
     }
 }
