@@ -9,6 +9,7 @@ namespace ProjectReporter.Modules.GroupsService.Api.Factories
         public GroupContract Create(Group group) =>
             new()
             {
+                Id = group.Id,
                 Name = group.Name,
                 CoOwnerId = group.CoOwnerId,
                 Description = group.Description,

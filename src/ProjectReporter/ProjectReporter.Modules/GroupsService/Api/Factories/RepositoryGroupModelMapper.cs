@@ -11,6 +11,7 @@ namespace ProjectReporter.Modules.GroupsService.Api.Factories
                 contract.Status,
                 ownerId,
                 contract.CoOwnerId,
-                contract.GitLink);
+                contract.GitLink,
+                id: contract.Id);
     }
 }
