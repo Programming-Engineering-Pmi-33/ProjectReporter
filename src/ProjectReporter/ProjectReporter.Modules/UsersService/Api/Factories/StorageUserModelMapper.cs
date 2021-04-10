@@ -20,7 +20,7 @@ namespace ProjectReporter.Modules.UsersService.Api.Factories
 
         public User Map(TeacherRegisterContract contract)
         {
-            return new Teacher()
+            return new Teacher
             {
                 FirstName = contract.FirstName,
                 LastName = contract.LastName,

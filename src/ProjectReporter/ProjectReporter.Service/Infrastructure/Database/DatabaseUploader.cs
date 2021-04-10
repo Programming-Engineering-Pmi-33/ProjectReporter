@@ -24,14 +24,9 @@ namespace ProjectReporter.Service.Infrastructure.Database
                 _storage.Faculties.AddRange(faculties);
                 _storage.SaveChanges();
             }
-            catch (Exception exception)
+            catch (DataException exception)
             {
-                if (exception is ArgumentException)
-                {
-                    throw;
-                }
-
-                throw new DataException("File is not found or broken.");
+                throw new DataException("File is not found or broken.", exception);
             }
         }
 
@@ -41,25 +36,33 @@ namespace ProjectReporter.Service.Infrastructure.Database
             {
                 var facultyName = line.Split(':')[0].Trim();
                 var departmentNames = line.Split(':')[1].Split(';');
+                var groupNames = line.Split(':')[2].Split(',');
                 var departments = departmentNames.Select(dn => new Department
                 {
                     Name = FirstCharToUpper(dn.Trim())
                 })
                     .ToList();
-                return new Faculty { Name = FirstCharToUpper(facultyName), Departments = departments };
+                var groups = groupNames.Select(gn => new AcademicGroup
+                {
+                    Name = FirstCharToUpper(gn.Trim()),
+                })
+                    .ToList();
+                return new Faculty { Name = FirstCharToUpper(facultyName), Departments = departments, AcademicGroups = groups };
             }
             catch
             {
-                throw new ArgumentException("Faculty cannot be parsed.");
+                throw new DataException("Cannot parse faculties.");
             }
         }
 
-        private static string FirstCharToUpper(string text) =>
-            text switch
+        private static string FirstCharToUpper(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
             {
-                null => throw new ArgumentNullException(nameof(text)),
-                "" => throw new ArgumentException($"{nameof(text)} cannot be empty", nameof(text)),
-                _ => text.First().ToString().ToUpper() + text.Substring(1)
-            };
+                throw new ArgumentException("Text cannot be empty or white space.");
+            }
+
+            return text.First().ToString().ToUpper() + text.Substring(1);
+        }
     }
 }

@@ -14,7 +14,6 @@ namespace ProjectReporter.Modules.UsersService.Storage
         [Required] public DateTime DateTimeModified { get; set; }
 
         public virtual Faculty Faculty { get; set; }
-        public virtual List<AcademicGroup> AcademicGroups { get; set; }
         public virtual List<Teacher> Teachers { get; set; }
     }
 }
