@@ -28,5 +28,6 @@
 
   <ItemGroup>
     <Folder Include="GroupsService\Api\Contracts\" />
+    <Folder Include="UsersService\Exceptions\" />
   </ItemGroup>
 </Project>

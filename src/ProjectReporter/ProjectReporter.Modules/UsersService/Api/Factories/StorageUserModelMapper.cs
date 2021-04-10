@@ -5,9 +5,9 @@ namespace ProjectReporter.Modules.UsersService.Api.Factories
 {
     public class StorageUserModelMapper: IStorageUserModelMapper
     {
-        public User Map(StudentRegisterContract contract)
+        public Student Map(StudentRegisterContract contract)
         {
-            return new Student
+            return new()
             {
                 FirstName = contract.FirstName,
                 LastName = contract.LastName,
@@ -18,9 +18,9 @@ namespace ProjectReporter.Modules.UsersService.Api.Factories
             };
         }
 
-        public User Map(TeacherRegisterContract contract)
+        public Teacher Map(TeacherRegisterContract contract)
         {
-            return new Teacher
+            return new()
             {
                 FirstName = contract.FirstName,
                 LastName = contract.LastName,

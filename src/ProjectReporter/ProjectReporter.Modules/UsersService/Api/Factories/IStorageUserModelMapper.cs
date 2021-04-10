@@ -5,7 +5,7 @@ namespace ProjectReporter.Modules.UsersService.Api.Factories
 {
     public interface IStorageUserModelMapper
     {
-        User Map(StudentRegisterContract contract);
-        User Map(TeacherRegisterContract contract);
+        Student Map(StudentRegisterContract contract);
+        Teacher Map(TeacherRegisterContract contract);
     }
 }
