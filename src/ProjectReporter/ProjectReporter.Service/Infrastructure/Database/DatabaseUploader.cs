@@ -20,6 +20,7 @@ namespace ProjectReporter.Service.Infrastructure.Database
             try
             {
                 var lines = File.ReadAllLines(filePath);
+                Console.WriteLine(lines[0]);
                 var faculties = lines.Select(ParseFaculty);
                 _storage.Faculties.AddRange(faculties);
                 _storage.SaveChanges();
@@ -41,16 +42,22 @@ namespace ProjectReporter.Service.Infrastructure.Database
             {
                 var facultyName = line.Split(':')[0].Trim();
                 var departmentNames = line.Split(':')[1].Split(';');
+                var groupNames = line.Split(':')[2].Split(',');
                 var departments = departmentNames.Select(dn => new Department
                 {
                     Name = FirstCharToUpper(dn.Trim())
                 })
                     .ToList();
-                return new Faculty { Name = FirstCharToUpper(facultyName), Departments = departments };
+                var groups = groupNames.Select(gn => new AcademicGroup
+                {
+                    Name = FirstCharToUpper(gn.Trim()),
+                })
+                    .ToList();
+                return new Faculty { Name = FirstCharToUpper(facultyName), Departments = departments, AcademicGroups = groups };
             }
-            catch
+            catch 
             {
-                throw new ArgumentException("Faculty cannot be parsed.");
+                throw new DataException("Cannot parse faculties.");
             }
         }
 
