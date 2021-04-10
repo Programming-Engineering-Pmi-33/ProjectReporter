@@ -20,19 +20,13 @@ namespace ProjectReporter.Service.Infrastructure.Database
             try
             {
                 var lines = File.ReadAllLines(filePath);
-                Console.WriteLine(lines[0]);
                 var faculties = lines.Select(ParseFaculty);
                 _storage.Faculties.AddRange(faculties);
                 _storage.SaveChanges();
             }
-            catch (Exception exception)
+            catch (DataException exception)
             {
-                if (exception is ArgumentException)
-                {
-                    throw;
-                }
-
-                throw new DataException("File is not found or broken.");
+                throw new DataException("File is not found or broken.", exception);
             }
         }
 
@@ -55,18 +49,20 @@ namespace ProjectReporter.Service.Infrastructure.Database
                     .ToList();
                 return new Faculty { Name = FirstCharToUpper(facultyName), Departments = departments, AcademicGroups = groups };
             }
-            catch 
+            catch
             {
                 throw new DataException("Cannot parse faculties.");
             }
         }
 
-        private static string FirstCharToUpper(string text) =>
-            text switch
+        private static string FirstCharToUpper(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
             {
-                null => throw new ArgumentNullException(nameof(text)),
-                "" => throw new ArgumentException($"{nameof(text)} cannot be empty", nameof(text)),
-                _ => text.First().ToString().ToUpper() + text.Substring(1)
-            };
+                throw new ArgumentException("Text cannot be empty or white space.");
+            }
+
+            return text.First().ToString().ToUpper() + text.Substring(1);
+        }
     }
 }
