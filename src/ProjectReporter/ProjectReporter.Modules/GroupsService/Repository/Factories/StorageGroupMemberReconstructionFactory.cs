@@ -4,7 +4,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
 {
     public class StorageGroupMemberReconstructionFactory : IStorageGroupMemberReconstructionFactory
     {
-        public GroupMember Map(Storage.GroupMember member) =>
+        public GroupMember Create(Storage.GroupMember member) =>
             new(member.GroupId,
                 member.UserId,
                 member.InviterId,

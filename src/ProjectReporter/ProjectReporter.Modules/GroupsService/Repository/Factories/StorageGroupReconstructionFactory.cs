@@ -28,7 +28,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
                     .ToArray(),
                 group.Tasks.Select(t => _taskReconstructionFactory.Create(t))
                     .ToArray(),
-                group.Members.Select(m => _groupMemberReconstructionFactory.Map(m))
+                group.Members.Select(m => _groupMemberReconstructionFactory.Create(m))
                     .ToArray(),
                 group.Id);
     }

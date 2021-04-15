@@ -90,7 +90,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
             return invites.Length is 0
                 ? throw new InvitesNotFoundException()
                 : invites
-                    .Select(m => _groupMemberReconstructionFactory.Map(m.Members.First(u => u.UserId == userId)))
+                    .Select(m => _groupMemberReconstructionFactory.Create(m.Members.First(u => u.UserId == userId)))
                     .ToArray();
         }
 

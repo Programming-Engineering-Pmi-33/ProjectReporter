@@ -4,6 +4,6 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
 {
     public interface IStorageGroupMemberReconstructionFactory
     {
-        GroupMember Map(Storage.GroupMember member);
+        GroupMember Create(Storage.GroupMember member);
     }
 }
