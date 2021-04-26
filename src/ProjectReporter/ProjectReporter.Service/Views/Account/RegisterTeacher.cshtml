@@ -1,0 +1,39 @@
+﻿@model ProjectReporter.Modules.UsersService.Api.Contracts.TeacherRegisterContract
+@{
+    ViewData["Title"] = "Реєстрація";
+}
+@{
+    <h1>Реєстрація - Викладач</h1>
+    <form method="post" asp-controller="Account" asp-action="RegisterTeacher">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label>Email</label><br />
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label>Пароль</label><br />
+            <input asp-for="Password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label>Підтвердіть пароль</label><br />
+            <input asp-for="PasswordConfirm" />
+            <span asp-validation-for="PasswordConfirm"></span>
+        </div>
+        <div>
+            <label>Ім'я</label><br />
+            <input asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div>
+            <label>Прізвище</label><br />
+            <input asp-for="LastName" />
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div>
+            <button class="btn-primary" asp-controller="Account" asp-action="Register">Назад</button>
+            <input type="submit" class="btn-primary" value="Зареєструватись" />
+        </div>
+    </form>
+}
