@@ -18,6 +18,9 @@ namespace ProjectReporter.Modules.UsersService
             services.AddTransient(typeof(IUsersApi), typeof(UsersApi));
             services.AddTransient(typeof(IStorageUserModelMapper), typeof(StorageUserModelMapper));
             services.AddTransient(typeof(IStorageUserReconstructionFactory), typeof(StorageUserReconstructionFactory));
+            services.AddTransient(typeof(IStorageAcademicGroupReconstructionFactory), typeof(StorageAcademicGroupReconstructionFactory));
+            services.AddTransient(typeof(IStorageFacultyReconstructionFactory), typeof(StorageFacultyReconstructionFactory));
+            services.AddTransient(typeof(IStorageDepartmentReconstructionFactory), typeof(StorageDepartmentReconstructionFactory));
             services.AddTransient(typeof(IUsersRepository), typeof(UsersRepository));
         }
 

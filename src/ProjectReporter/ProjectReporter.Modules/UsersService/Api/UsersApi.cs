@@ -45,29 +45,23 @@ namespace ProjectReporter.Modules.UsersService.Api
             }
         }
 
-        public async Task Login(UserLoginContract contract)
-        {
-            await _signInManager.PasswordSignInAsync(contract.Email, contract.Password, contract.RememberMe, false);
-        }
+        public async Task Login(UserLoginContract contract) =>
+            await _signInManager.PasswordSignInAsync(contract.Email,
+                contract.Password,
+                contract.RememberMe,
+                false);
 
-        public async Task Logout()
-        {
-            await _signInManager.SignOutAsync();
-        }
+        public async Task Logout() => await _signInManager.SignOutAsync();
 
-        public async Task<User[]> GetUsers(params string[] ids)
-        {
-            return await _repository.GetUsers(ids);
-        }
+        public async Task<User[]> GetUsers(params string[] ids) => await _repository.GetUsers(ids);
 
-        public async Task<Student[]> GetStudents(int academicGroupId)
-        {
-            return await _repository.GetStudents(academicGroupId);
-        }
+        public async Task<Student[]> GetStudents(int academicGroupId) => await _repository.GetStudents(academicGroupId);
 
-        public async Task<Teacher[]> GetTeachers(int facultyId, string[] ids = null)
-        {
-            return await _repository.GetTeachers(facultyId, ids);
-        }
+        public async Task<Teacher[]> GetTeachers(int facultyId, string[] ids = null) => await _repository.GetTeachers(facultyId, ids);
+
+        public async Task<Faculty[]> GetFaculties() => await _repository.GetFaculties();
+
+        public async Task<Department[]> GetDepartments(int facultyId) => await _repository.GetDepartments(facultyId);
+        public async Task<AcademicGroup[]> GetAcademicGroups(int facultyId) => await _repository.GetAcademicGroups(facultyId);
     }
 }
