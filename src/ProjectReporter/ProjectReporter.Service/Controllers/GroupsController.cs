@@ -29,6 +29,11 @@ namespace ProjectReporter.Service.Controllers
             ViewBag.Groups = await _groupsApi.GetGroups("1");
             return View();
         }
+        public async Task<IActionResult> Projects()
+        {
+            ViewBag.Projects = await _groupsApi.GetProjects(4,"1");
+            return View();
+        }
 
         public IActionResult Privacy()
         {

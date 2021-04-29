@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Groups Page";
+    ViewData["Title"] = "Projects Page";
 }
 <head>
     <style type="text/css">
@@ -10,14 +10,13 @@
             padding: 0;
             display: flex;
             flex-wrap: wrap;
-            flex-direction: row;
         }
 
         .list-group-item {
             display: flex;
             margin: 1.5em;
-            width: 13em;
-            height:5em;
+            width: auto;
+            height:3em;
             background-color: aliceblue;
         }
 
@@ -32,18 +31,18 @@
 </head>
 
 <div class="text-center">
-    <h1>Groups</h1>
+    <h1>Projects</h1>
     <ul class="list-group">
-            @foreach (var i in ViewBag.Groups)
-            {
-        <a asp-controller="Groups" asp-action="Projects">
+        @foreach (var i in ViewBag.Projects)
+        {
+        <a >
             <li class="list-group-item">
                 <div class="text-name">
-                    @i.Name
+                    9
                 </div>
             </li>
         </a>
-            }
-        </ul>
+        }
+    </ul>
     
 </div>
