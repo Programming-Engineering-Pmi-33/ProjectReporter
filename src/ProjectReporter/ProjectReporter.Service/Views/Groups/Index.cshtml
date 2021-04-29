@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Groups Page";
+}
+<head>
+    <style type="text/css">
+
+        .list-group {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+
+        .list-group-item {
+            display: flex;
+            margin: 1.5em;
+            width: 13em;
+            height:5em;
+            background-color: aliceblue;
+        }
+
+        .text-name {
+            margin-top: auto;
+            margin-bottom: auto;
+            display: flex;
+            padding-left: 1.2em;
+            padding-right: 1.2em;
+        }
+    </style>
+</head>
+
+<div class="text-center">
+    <h1>Groups</h1>
+    <ul class="list-group">
+            @foreach (var i in ViewBag.Groups)
+            {
+            <li class="list-group-item">
+                    <div class="text-name">
+                        @i.Name
+                    </div>
+            </li>
+            }
+        </ul>
+    
+</div>

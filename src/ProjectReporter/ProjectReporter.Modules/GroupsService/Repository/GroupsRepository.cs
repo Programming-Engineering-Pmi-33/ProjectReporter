@@ -64,7 +64,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         public async Task<Group[]> GetGroups(string userId)
         {
             var groups = await _storage.GetGroups().Where(g =>
-                g.OwnerId == userId || g.CoOwnerId == userId || g.Members.Exists(m => m.UserId == userId))
+                g.OwnerId == userId || g.CoOwnerId == userId || g.Members.Any(m => m.UserId == userId))
                 .ToArrayAsync();
 
             return groups.Length is 0
