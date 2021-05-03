@@ -1,0 +1,74 @@
+﻿@model ProjectReporter.Modules.UsersService.Api.Contracts.StudentRegisterContract
+@{
+    ViewData["Title"] = "Реєстрація";
+}
+@{
+    <h1>Реєстрація - Студент</h1>
+    <form method="post" asp-controller="Account" asp-action="RegisterStudent">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label>Email</label><br />
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label>Пароль</label><br />
+            <input asp-for="Password" type="password"/>
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <label>Підтвердіть пароль</label><br />
+            <input asp-for="PasswordConfirm" type="password"/>
+            <span asp-validation-for="PasswordConfirm"></span>
+        </div>
+        <div>
+            <label>Ім'я</label><br />
+            <input asp-for="FirstName" />
+            <span asp-validation-for="FirstName"></span>
+        </div>
+        <div>
+            <label>Прізвище</label><br />
+            <input asp-for="LastName" />
+            <span asp-validation-for="LastName"></span>
+        </div>
+        <div>
+            <label>Репозиторій</label><br />
+            <input asp-for="GitLink" />
+        </div>
+        <div>
+            <label>Факультет</label><br />
+            <select id="facultySelect" asp-for="FacultyId" asp-items="ViewBag.Faculties" onchange="getGroups()"></select>
+        </div>
+        <div>
+            <label>Група</label><br />
+            <select id="groupSelect" asp-for="GroupId" asp-items="ViewBag.Groups"></select>
+        </div>
+        <div>
+            <button class="btn-primary" asp-controller="Account" asp-action="Register">Назад</button>
+            <input type="submit" class="btn-primary" value="Зареєструватись" />
+        </div>
+    </form>
+}
+@section Scripts
+{
+    <script>
+        function getGroups() {
+            const selectedFaculty = $("#facultySelect").val();
+            $.ajax({
+                cache: false,
+                url: '@Url.Action("GetGroups", "Account")',
+                type: 'Get',
+                data: { facultyId: selectedFaculty },
+                success: function(result) {
+                    var groups = "";
+                    $(result).each(function () {
+                        groups = groups + '<option value="' + this.id + '">' + this.name + '</option>'
+                    });
+                    var groupSelect = $("#groupSelect");
+                    groupSelect.empty();
+                    groupSelect.append(groups);
+                }
+            });
+        };
+    </script>
+}

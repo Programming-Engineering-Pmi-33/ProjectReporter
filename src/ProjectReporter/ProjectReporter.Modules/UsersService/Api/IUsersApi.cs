@@ -13,5 +13,8 @@ namespace ProjectReporter.Modules.UsersService.Api
         Task<User[]> GetUsers(params string[] ids);
         Task<Student[]> GetStudents(int academicGroupId);
         Task<Teacher[]> GetTeachers(int facultyId, string[] ids = null);
+        Task<Faculty[]> GetFaculties();
+        Task<Department[]> GetDepartments(int facultyId);
+        Task<AcademicGroup[]> GetAcademicGroups(int facultyId);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using ProjectReporter.Modules.UsersService.Api.Contracts;
 using ProjectReporter.Modules.UsersService.Api.Factories;
+using ProjectReporter.Modules.UsersService.Exceptions;
 using ProjectReporter.Modules.UsersService.Repository;
 using ProjectReporter.Modules.UsersService.Repository.Models;
 
@@ -29,6 +30,10 @@ namespace ProjectReporter.Modules.UsersService.Api
         {
             var user = _mapper.Map(contract);
             var result = await _userManager.CreateAsync(user, contract.Password);
+            if (!result.Succeeded)
+            {
+                throw new WrongRegisterDataException();
+            }
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
@@ -39,35 +44,33 @@ namespace ProjectReporter.Modules.UsersService.Api
         {
             var user = _mapper.Map(contract);
             var result = await _userManager.CreateAsync(user, contract.Password);
+            if (!result.Succeeded)
+            {
+                throw new WrongRegisterDataException();
+            }
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
             }
         }
 
-        public async Task Login(UserLoginContract contract)
-        {
-            await _signInManager.PasswordSignInAsync(contract.Email, contract.Password, contract.RememberMe, false);
-        }
+        public async Task Login(UserLoginContract contract) =>
+            await _signInManager.PasswordSignInAsync(contract.Email,
+                contract.Password,
+                contract.RememberMe,
+                false);
 
-        public async Task Logout()
-        {
-            await _signInManager.SignOutAsync();
-        }
+        public async Task Logout() => await _signInManager.SignOutAsync();
 
-        public async Task<User[]> GetUsers(params string[] ids)
-        {
-            return await _repository.GetUsers(ids);
-        }
+        public async Task<User[]> GetUsers(params string[] ids) => await _repository.GetUsers(ids);
 
-        public async Task<Student[]> GetStudents(int academicGroupId)
-        {
-            return await _repository.GetStudents(academicGroupId);
-        }
+        public async Task<Student[]> GetStudents(int academicGroupId) => await _repository.GetStudents(academicGroupId);
 
-        public async Task<Teacher[]> GetTeachers(int facultyId, string[] ids = null)
-        {
-            return await _repository.GetTeachers(facultyId, ids);
-        }
+        public async Task<Teacher[]> GetTeachers(int facultyId, string[] ids = null) => await _repository.GetTeachers(facultyId, ids);
+
+        public async Task<Faculty[]> GetFaculties() => await _repository.GetFaculties();
+
+        public async Task<Department[]> GetDepartments(int facultyId) => await _repository.GetDepartments(facultyId);
+        public async Task<AcademicGroup[]> GetAcademicGroups(int facultyId) => await _repository.GetAcademicGroups(facultyId);
     }
 }

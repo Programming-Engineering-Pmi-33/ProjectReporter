@@ -8,5 +8,8 @@ namespace ProjectReporter.Modules.UsersService.Repository
         Task<User[]> GetUsers(params string[] ids);
         Task<Student[]> GetStudents(int academicGroupId);
         Task<Teacher[]> GetTeachers(int facultyId, string[] ids = null);
+        Task<Department[]> GetDepartments(int facultyId);
+        Task<AcademicGroup[]> GetAcademicGroups(int facultyId);
+        Task<Faculty[]> GetFaculties();
     }
 }

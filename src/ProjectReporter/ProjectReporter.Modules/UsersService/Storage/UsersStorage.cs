@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProjectReporter.Modules.UsersService.Storage
@@ -11,6 +12,14 @@ namespace ProjectReporter.Modules.UsersService.Storage
         public DbSet<Faculty> Faculties { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<AcademicGroup> AcademicGroups { get; set; }
+
+        public IQueryable<Faculty> FindFaculties() =>
+            Faculties.Include(f => f.AcademicGroups).Include(f => f.Departments);
+
+        public IQueryable<Department> FindDepartments() => 
+            Departments.Include(d => d.Teachers).Include(d => d.Faculty);
+
+        public IQueryable<AcademicGroup> FindAcademicGroups() => AcademicGroups.Include(a => a.Faculty);
 
         public UsersStorage(DbContextOptions<UsersStorage> options)
             : base(options)

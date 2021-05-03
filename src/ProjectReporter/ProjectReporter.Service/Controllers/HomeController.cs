@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Logging;
 using ProjectReporter.Service.Models;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using ProjectReporter.Modules.GroupsService.Api;
 using ProjectReporter.Modules.UsersService.Storage;
 
 namespace ProjectReporter.Service.Controllers
@@ -12,16 +14,19 @@ namespace ProjectReporter.Service.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IGroupsApi _groupsApi;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<User> userManager, SignInManager<User> signInManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<User> userManager, SignInManager<User> signInManager, IGroupsApi groupsApi)
         {
             _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
+            _groupsApi = groupsApi;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.Groups = await _groupsApi.GetGroups("ownerId");
             return View();
         }
 
