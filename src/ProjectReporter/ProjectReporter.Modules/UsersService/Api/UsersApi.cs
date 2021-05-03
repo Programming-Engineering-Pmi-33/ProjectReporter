@@ -32,7 +32,7 @@ namespace ProjectReporter.Modules.UsersService.Api
             var result = await _userManager.CreateAsync(user, contract.Password);
             if (!result.Succeeded)
             {
-                throw new WrongRegisterData();
+                throw new WrongRegisterDataException();
             }
             if (result.Succeeded)
             {
@@ -44,6 +44,10 @@ namespace ProjectReporter.Modules.UsersService.Api
         {
             var user = _mapper.Map(contract);
             var result = await _userManager.CreateAsync(user, contract.Password);
+            if (!result.Succeeded)
+            {
+                throw new WrongRegisterDataException();
+            }
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
