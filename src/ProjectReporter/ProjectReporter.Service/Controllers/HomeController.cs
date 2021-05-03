@@ -26,7 +26,6 @@ namespace ProjectReporter.Service.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Groups = await _groupsApi.GetGroups("ownerId");
             return View();
         }
 

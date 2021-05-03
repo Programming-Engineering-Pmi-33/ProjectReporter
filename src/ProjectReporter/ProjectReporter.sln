@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectReporter.Service", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectReporter.Modules", "ProjectReporter.Modules\ProjectReporter.Modules.csproj", "{1ED4191C-FC72-45DF-BBC5-70B1D6A51CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectReporter.UnitTests", "ProjectReporter.UnitTests\ProjectReporter.UnitTests.csproj", "{6FDA4859-188B-48E2-9665-4D4F7CFA73F3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{1ED4191C-FC72-45DF-BBC5-70B1D6A51CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ED4191C-FC72-45DF-BBC5-70B1D6A51CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1ED4191C-FC72-45DF-BBC5-70B1D6A51CC9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FDA4859-188B-48E2-9665-4D4F7CFA73F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FDA4859-188B-48E2-9665-4D4F7CFA73F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FDA4859-188B-48E2-9665-4D4F7CFA73F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FDA4859-188B-48E2-9665-4D4F7CFA73F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

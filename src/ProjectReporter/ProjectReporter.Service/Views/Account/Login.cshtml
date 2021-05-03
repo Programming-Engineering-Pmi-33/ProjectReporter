@@ -1,0 +1,29 @@
+﻿@model ProjectReporter.Modules.UsersService.Api.Contracts.UserLoginContract
+@{
+    ViewData["Title"] = "Вхід";
+}
+@{
+    <h1>Вхід</h1>
+    <form method="post" asp-controller="Account" asp-action="Login">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label>Email</label><br />
+            <input asp-for="Email" />
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label>Пароль</label><br />
+            <input asp-for="Password" type="password" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div>
+            <input type="checkbox" asp-for="RememberMe" />
+            <label>Запам'ятати</label>
+        </div>
+        <div>
+            <button class="btn-primary" asp-controller="Home" asp-action="Index">Назад</button>
+            <input type="submit" class="btn-primary" value="Увійти" />
+        </div>
+    </form>
+}
+

@@ -43,8 +43,28 @@ namespace ProjectReporter.Service.Controllers
             return View();
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(UserLoginContract contract)
+        {
+            await _usersApi.Login(contract);
+            return Redirect("/home");
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> RegisterStudent(StudentRegisterContract contract)
+        {
+            await _usersApi.Register(contract);
+            return Redirect("/home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterTeacher(TeacherRegisterContract contract)
         {
             await _usersApi.Register(contract);
             return Redirect("/home");

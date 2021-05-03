@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +22,11 @@ namespace ProjectReporter.Service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.SignIn.RequireConfirmedAccount = false;
+            });
             services.AddTransient(typeof(IDatabaseUpdater), typeof(DatabaseUpdater));
             services.AddTransient(typeof(IDatabaseUploader), typeof(DatabaseUploader));
             services.AddTransient(typeof(IDataGenerator), typeof(DataGenerator));

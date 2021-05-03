@@ -24,6 +24,7 @@ namespace ProjectReporter.Modules.UsersService.Api
             _signInManager = signInManager;
             _mapper = mapper;
             _repository = repository;
+            _signInManager.Options.SignIn.RequireConfirmedAccount = false;
         }
 
         public async Task Register(StudentRegisterContract contract)
@@ -54,11 +55,13 @@ namespace ProjectReporter.Modules.UsersService.Api
             }
         }
 
-        public async Task Login(UserLoginContract contract) =>
-            await _signInManager.PasswordSignInAsync(contract.Email,
+        public async Task Login(UserLoginContract contract)
+        {
+            var result = await _signInManager.PasswordSignInAsync(contract.Email,
                 contract.Password,
                 contract.RememberMe,
                 false);
+        }
 
         public async Task Logout() => await _signInManager.SignOutAsync();
 
