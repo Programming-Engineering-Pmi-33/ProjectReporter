@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using ProjectReporter.Modules.UsersService.Api.Contracts;
 using ProjectReporter.Modules.UsersService.Api.Factories;
+using ProjectReporter.Modules.UsersService.Exceptions;
 using ProjectReporter.Modules.UsersService.Repository;
 using ProjectReporter.Modules.UsersService.Repository.Models;
 
@@ -29,6 +30,10 @@ namespace ProjectReporter.Modules.UsersService.Api
         {
             var user = _mapper.Map(contract);
             var result = await _userManager.CreateAsync(user, contract.Password);
+            if (!result.Succeeded)
+            {
+                throw new WrongRegisterData();
+            }
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);

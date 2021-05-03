@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using ProjectReporter.Modules.UsersService.Api;
 using ProjectReporter.Modules.UsersService.Api.Contracts;
+using ProjectReporter.Modules.UsersService.Exceptions;
+using ProjectReporter.Modules.UsersService.Repository.Models;
 
 namespace ProjectReporter.Service.Controllers
 {
@@ -25,10 +24,17 @@ namespace ProjectReporter.Service.Controllers
             var faculties = await _usersApi.GetFaculties();
             var list = new SelectList(faculties, "Id", "Name");
             ViewBag.Faculties = list;
+            var groups = await GetGroups(faculties[0].Id);
+            ViewBag.Groups = new SelectList(groups, "Id", "Name");
             return View();
         }
-        public IActionResult RegisterTeacher()
+        public async Task<IActionResult> RegisterTeacher()
         {
+            var faculties = await _usersApi.GetFaculties();
+            var list = new SelectList(faculties, "Id", "Name");
+            ViewBag.Faculties = list;
+            var departments = await GetDepartments(faculties[0].Id);
+            ViewBag.Departments = new SelectList(departments, "Id", "Name");
             return View();
         }
 
@@ -38,14 +44,20 @@ namespace ProjectReporter.Service.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegisterStudent(StudentRegisterContract contract)
+        public async Task<IActionResult> RegisterStudent(StudentRegisterContract contract)
         {
+            await _usersApi.Register(contract);
             return Redirect("/home");
         }
 
-        public async Task<dynamic> LoadGroups(int facultyId)
+        public async Task<AcademicGroup[]> GetGroups(int facultyId)
         {
             return await _usersApi.GetAcademicGroups(facultyId);
+        }
+
+        public async Task<Department[]> GetDepartments(int facultyId)
+        {
+            return await _usersApi.GetDepartments(facultyId);
         }
     }
 }
