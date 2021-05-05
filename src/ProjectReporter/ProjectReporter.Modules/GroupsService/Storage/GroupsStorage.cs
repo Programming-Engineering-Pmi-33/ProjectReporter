@@ -14,6 +14,7 @@ namespace ProjectReporter.Modules.GroupsService.Storage
         public IQueryable<Group> GetGroups() =>
             Groups.Include(g => g.Members)
                 .Include(g => g.Projects).ThenInclude(g => g.Reports)
+                .Include(g => g.Projects).ThenInclude(g => g.Members)
                 .Include(g => g.Tasks)
                 .ThenInclude(g => g.Reports);
 

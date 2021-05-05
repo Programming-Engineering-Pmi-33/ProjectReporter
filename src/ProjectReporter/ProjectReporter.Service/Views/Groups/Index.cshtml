@@ -44,16 +44,16 @@
 <div class="text-center">
     <h1>Groups</h1>
     <ul class="list-group">
-            @foreach (var i in ViewBag.Groups)
-            {
-            <a class="list-group-item-href" asp-controller="Groups" asp-action="i.Id">
+        @foreach (var i in ViewBag.Groups)
+        {
+            <a asp-action="Projects" asp-route-groupId="@i.Id">
                 <li class="list-group-item">
                     <div class="text-name">
                         @i.Name
                     </div>
                 </li>
             </a>
-            }
-        </ul>
-    
+        }
+    </ul>
+
 </div>

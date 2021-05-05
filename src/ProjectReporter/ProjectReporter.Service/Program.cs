@@ -40,8 +40,8 @@ namespace ProjectReporter.Service
                     Console.WriteLine("Generating data.");
                     var generator = scope.ServiceProvider.GetService<IDataGenerator>();
                     const int numberOfItems = 5;
-                    generator?.AddUsers(numberOfItems, numberOfItems, numberOfItems);
-                    generator?.AddGroups(numberOfItems, numberOfItems, numberOfItems);
+                    //generator?.AddUsers(numberOfItems, numberOfItems, numberOfItems);
+                    generator?.AddGroups(numberOfItems, 25, numberOfItems);
                     Console.WriteLine("Done.");
                 }
 

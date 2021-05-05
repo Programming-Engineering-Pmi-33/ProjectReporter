@@ -108,7 +108,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository
         {
             var group = await _storage.GetGroups().FirstOrDefaultAsync(g => g.Id == groupId);
             if (group is null) throw new GroupsNotFoundException(groupId);
-            var projects = group.Projects.Where(p => p.Members.Exists(m => m.UserId == userId)).ToArray();
+            var projects = group.Projects.Where(p => p.Members?.Exists(m => m.UserId == userId) ?? false).ToArray();
             if (projects.Length is 0) throw new ProjectsNotFoundException();
             return projects.Select(p => _projectReconstructionFactory.Create(p)).ToArray();
         }

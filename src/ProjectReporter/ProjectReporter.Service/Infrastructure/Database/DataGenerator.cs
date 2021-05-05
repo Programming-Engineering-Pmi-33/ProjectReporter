@@ -112,9 +112,6 @@ namespace ProjectReporter.Service.Infrastructure.Database
         }
         public void AddGroups(int groups, int projects, int tasks)
         {
-            var users = _usersStorage.Users.ToList();
-            if (users.Count < 5)
-                return;
             for (var i = 0; i < groups; i++)
             {
                 var group = new Group
@@ -122,19 +119,19 @@ namespace ProjectReporter.Service.Infrastructure.Database
                     Name = GetRandStr(MinNamesLen, MaxNamesLen),
                     Description = GetRandStr(MinFacultyLen, MaxFacultyLen),
                     Status = _rand.Next(MinStatus, MaxStatus),
-                    OwnerId = users[_rand.Next(users.Count)].Id,
+                    OwnerId = "1",
                     GitLink = GetRandStr(MinNamesLen, MaxNamesLen, true),
                     Projects = new List<Project>(),
                     Members = new List<GroupMember>(),
                     Tasks = new List<Task>()
                 };
-                for (var j = 0; j < _rand.Next(MaxCountOfUsersInGroup); j++)
+                for (var j = 0; j < 1; j++)
                 {
                     group.Members.Add(
                         new GroupMember
                         {
-                            UserId = users[_rand.Next(users.Count)].Id,
-                            InviterId = users[_rand.Next(users.Count)].Id,
+                            UserId = "2",
+                            InviterId = "2",
                             Group = group,
                             Guid = GetRandStr(MinNamesLen, MaxNamesLen)
                         }
@@ -144,9 +141,10 @@ namespace ProjectReporter.Service.Infrastructure.Database
                 _groupsStorage.SaveChanges();
             }
 
+
             for (var i = 0; i < projects; i++)
             {
-                var groupId = _rand.Next(1, _groupsStorage.Groups.Count());
+                var groupId = 43;/////
                 var curGroup = _groupsStorage.Groups.Include(t => t.Projects).First(g => g.Id == groupId);
                 var project = new Project
                 {
@@ -157,12 +155,12 @@ namespace ProjectReporter.Service.Infrastructure.Database
                     Members = new List<ProjectMember>(),
                     Reports = new List<Report>()
                 };
-                for (var j = 0; j < _rand.Next(MaxCountOfUsersInGroup); j++)
+                for (var j = 0; j < 1; j++)
                 {
                     project.Members.Add(
                         new ProjectMember
                         {
-                            UserId = users[_rand.Next(users.Count)].Id,
+                            UserId = "1",
                             Project = project
                         }
                         );
@@ -173,7 +171,7 @@ namespace ProjectReporter.Service.Infrastructure.Database
 
             for (var i = 0; i < tasks; i++)
             {
-                var groupId = _rand.Next(1, _groupsStorage.Groups.Count());
+                var groupId = 43;////
                 var curGroup = _groupsStorage.Groups.Include(t => t.Tasks).First(g => g.Id == groupId);
                 var task = new Task
                 {

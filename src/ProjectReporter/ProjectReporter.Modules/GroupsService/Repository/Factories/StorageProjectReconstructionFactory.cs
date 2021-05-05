@@ -10,7 +10,7 @@ namespace ProjectReporter.Modules.GroupsService.Repository.Factories
                 project.Name,
                 project.Description,
                 project.GitLink,
-                project.Members.Select(m => m.UserId)
+                project.Members?.Select(m => m.UserId)
                     .ToArray(),
                 project.Id);
     }

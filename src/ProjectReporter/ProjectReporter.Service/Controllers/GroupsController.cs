@@ -29,7 +29,7 @@ namespace ProjectReporter.Service.Controllers
             ViewBag.Groups = await _groupsApi.GetGroups("1");//User.Identity.Name
             return View();
         }
-        [Route("/{groupId}")]
+        [Route("groups/{groupId}/projects")]
         public async Task<IActionResult> Projects(int groupId)
         {
             ViewBag.Projects = await _groupsApi.GetProjects(groupId,"1");//User.Identity.Name
