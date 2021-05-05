@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using ProjectReporter.Modules.UsersService.Storage;
 using ProjectReporter.Modules.GroupsService.Api;
 using System.Threading.Tasks;
+using ProjectReporter.Modules.GroupsService.Api.Contracts;
 
 namespace ProjectReporter.Service.Controllers
 {
@@ -35,7 +36,17 @@ namespace ProjectReporter.Service.Controllers
             ViewBag.Projects = await _groupsApi.GetProjects(groupId,"1");//User.Identity.Name
             return View();
         }
-
+        [HttpPost]
+        public async Task<IActionResult> CreateGroup(GroupContract contract)
+        {
+            await _groupsApi.CreateGroup(contract, User.Identity.Name);
+            return Redirect("/groups");
+        }
+        [Route("groups/create")]
+        public IActionResult AddGroup()
+        {
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();

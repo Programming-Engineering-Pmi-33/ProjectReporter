@@ -1,0 +1,59 @@
+﻿@model ProjectReporter.Modules.GroupsService.Api.Contracts.GroupContract
+@{
+    ViewData["Title"] = "Projects Page";
+}
+<head>
+    <style type="text/css">
+
+        .list-group {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .list-group-item {
+            display: flex;
+            margin: 1.5em;
+            width: auto;
+            height: 3em;
+            background-color: aliceblue;
+        }
+
+        .text-name {
+            margin-top: auto;
+            margin-bottom: auto;
+            display: flex;
+            padding-left: 1.2em;
+            padding-right: 1.2em;
+        }
+    </style>
+</head>
+
+@{
+    <h1>Створити Групу</h1>
+    <form method="post" asp-controller="Groups" asp-action="CreateGroup">
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <label>Назва</label><br />
+            <input asp-for="Name" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div>
+            <label>Опис</label><br />
+            <input asp-for="Description" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div>
+            <label>Статус</label><br />
+            <input type="radio" value="0" asp-for="Status">Public
+            <input type="radio" value="1" asp-for="Status">Private
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+        <div>
+            <button class="btn-primary" asp-controller="Groups" asp-action="Index">Назад</button>
+            <input type="submit" class="btn-primary" value="Створити" />
+        </div>
+    </form>
+}
