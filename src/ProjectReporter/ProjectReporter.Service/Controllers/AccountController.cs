@@ -51,23 +51,45 @@ namespace ProjectReporter.Service.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginContract contract)
         {
-            await _usersApi.Login(contract);
-            return Redirect("/home");
+            if (ModelState.IsValid)
+            {
+                await _usersApi.Login(contract);
+                return Redirect("/home");
+            }
+            return View();
         }
 
 
         [HttpPost]
         public async Task<IActionResult> RegisterStudent(StudentRegisterContract contract)
         {
-            await _usersApi.Register(contract);
-            return Redirect("/home");
+            if (ModelState.IsValid)
+            {
+                await _usersApi.Register(contract);
+                return Redirect("/home");
+            }
+            var faculties = await _usersApi.GetFaculties();
+            var list = new SelectList(faculties, "Id", "Name");
+            ViewBag.Faculties = list;
+            var groups = await GetGroups(contract.FacultyId);
+            ViewBag.Groups = new SelectList(groups, "Id", "Name");
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterTeacher(TeacherRegisterContract contract)
         {
-            await _usersApi.Register(contract);
-            return Redirect("/home");
+            if (ModelState.IsValid)
+            {
+                await _usersApi.Register(contract);
+                return Redirect("/home");
+            }
+            var faculties = await _usersApi.GetFaculties();
+            var list = new SelectList(faculties, "Id", "Name");
+            ViewBag.Faculties = list;
+            var departments = await GetDepartments(contract.FacultyId);
+            ViewBag.Departments = new SelectList(departments, "Id", "Name");
+            return View();
         }
 
         public async Task<AcademicGroup[]> GetGroups(int facultyId)
