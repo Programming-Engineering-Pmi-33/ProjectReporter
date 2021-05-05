@@ -26,14 +26,13 @@ namespace ProjectReporter.Service.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Groups = await _groupsApi.GetGroups("1");
+            ViewBag.Groups = await _groupsApi.GetGroups("1");//User.Identity.Name
             return View();
         }
-
-        [Route("{groupId}/projects")]
+        [Route("/{groupId}")]
         public async Task<IActionResult> Projects(int groupId)
         {
-            ViewBag.Projects = await _groupsApi.GetProjects(groupId,"1");
+            ViewBag.Projects = await _groupsApi.GetProjects(groupId,"1");//User.Identity.Name
             return View();
         }
 

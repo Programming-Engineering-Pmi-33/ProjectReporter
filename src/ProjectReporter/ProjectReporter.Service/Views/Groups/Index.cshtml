@@ -4,6 +4,8 @@
 <head>
     <style type="text/css">
 
+
+
         .list-group {
             list-style: none;
             margin: 0;
@@ -13,9 +15,16 @@
             flex-direction: row;
         }
 
+        .list-group-item-href {
+            display: flex;
+            margin: 1em;
+            width: 13em;
+            height: 5em;
+        }
+
         .list-group-item {
             display: flex;
-            margin: 1.5em;
+            margin: 0;
             width: 13em;
             height: 5em;
             background-color: aliceblue;
@@ -28,22 +37,23 @@
             padding-left: 1.2em;
             padding-right: 1.2em;
         }
+    
     </style>
 </head>
 
 <div class="text-center">
     <h1>Groups</h1>
     <ul class="list-group">
-        @foreach (var i in ViewBag.Groups)
-        {
-            <a asp-action="Projects" asp-route-groupId="@i.Id">
+            @foreach (var i in ViewBag.Groups)
+            {
+            <a class="list-group-item-href" asp-controller="Groups" asp-action="i.Id">
                 <li class="list-group-item">
                     <div class="text-name">
                         @i.Name
                     </div>
                 </li>
             </a>
-        }
-    </ul>
-
+            }
+        </ul>
+    
 </div>
